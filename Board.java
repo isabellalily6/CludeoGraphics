@@ -18,6 +18,7 @@ public class Board {
      * @param players
      */
     public void drawBoard(ArrayList<Player> players) {
+    	
         Cell[][] tempBoard = getPlayerBoard(players);
         for (int y = 0; y < HEIGHT; y++) {
             System.out.println();
@@ -92,11 +93,11 @@ public class Board {
     public void makeBoard() {
         String boardLayout =
                 "XXXXXXXXXXXXXXXXXXXXXXXX" +
-                        "XXXXXXX___XXXX___XXXXXXX" +
+                        "XKKKKX____XXXX____XCCCCX" +
                         "XKKKKX__XXXBBXXX__XCCCCX" +
                         "XKKKKX__XBBBBBBX__XCCCCX" +
                         "XKKKKX__XBBBBBBX__CCCCCX" +
-                        "XXKKKX__BBBBBBBB___XXXXX" +
+                        "XKKKKX__BBBBBBBB___XXXXX" +
                         "XXXXKX__XBBBBBBX_______X" +
                         "X_______XBXXXXBX_______X" +
                         "X_________________XXXXXX" +

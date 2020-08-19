@@ -12,11 +12,14 @@ public class CluedoGame {
     private Map<String, String> roomWeapons = new HashMap<>();
     private Board board;
     private Map<java.lang.Character, String> roomNames = new HashMap<>();
-    private ConsoleUI ui = new ConsoleUI();
+    private ConsoleUI ui;
     private Boolean gameOver = false;
 
     public CluedoGame() {
+
+        makePlayers();
         board = new Board();
+        this.ui = new ConsoleUI(board, players);
     }
 
     /**
@@ -31,8 +34,6 @@ public class CluedoGame {
             ui.invalidInput();
             numPlayers = ui.getNumPlayers();
         }
-
-        makePlayers();
 
         // add the correct number of players to the game
         currentPlayers.add(players.get(0));
@@ -57,7 +58,7 @@ public class CluedoGame {
 
         // draw the board
         ui.drawWeapons(roomWeapons);
-        board.drawBoard(players);
+        ui.repaint();
 
         Player winningPlayer = null;
         while (!gameOver) {  // loops through stages 2-4 from section 2.6 'User Interface' from handout
@@ -79,6 +80,7 @@ public class CluedoGame {
         }
 
     }
+    
 
     /**
      * Runs through a players turn including; dice roll, moves, suggestion etc
@@ -113,7 +115,7 @@ public class CluedoGame {
                     validMove = player.move(ui.getMoves(), board.getPlayerBoard(players), spacesUsed);
                 }
                 ui.drawWeapons(roomWeapons);
-                board.drawBoard(players);
+                ui.repaint();
                 diceNum -= 1;
             }
         }
@@ -137,7 +139,7 @@ public class CluedoGame {
             }
         }
         ui.drawWeapons(roomWeapons);
-        board.drawBoard(players);
+        ui.repaint();
     }
 
     /**
@@ -396,7 +398,7 @@ public class CluedoGame {
 
         // draw the new board
         ui.drawWeapons(roomWeapons);
-        board.drawBoard(players);
+        ui.repaint();
 
         guess.add(room);
 
