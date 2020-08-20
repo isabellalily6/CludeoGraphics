@@ -19,6 +19,7 @@ public class ConsoleUI extends JFrame{
     JPanel rightPanel = new JPanel();
     JPanel bottomPanel = new JPanel();
     JPanel mainPanel = new JPanel(new BorderLayout());
+    private boolean buttonPressed = false;
 
     private int cellSize = 26; //change this to change the size of the window on screen
     private int cellsWide = 24;
