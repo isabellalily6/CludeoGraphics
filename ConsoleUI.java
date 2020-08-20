@@ -244,7 +244,7 @@ accuseButton.addActionListener(new ActionListener() {
     public int getNumPlayers() {
             JDialog d = new JDialog(this);
             d.setModal(true);
-            JLabel label = new JLabel("Num of cells:");
+            JLabel label = new JLabel("Num of Players:");
             String[] characterString= {"3", "4", "5", "6"};
             JComboBox<String> num = new JComboBox<>(characterString);
             JButton next = new JButton("Next");
