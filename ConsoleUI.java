@@ -1,25 +1,28 @@
 // Controls all output and input of the game
 
+import sun.misc.JavaLangAccess;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.*;
 import javax.management.remote.rmi.RMIConnectionImpl;
 import javax.swing.*;
 
-public class ConsoleUI extends JFrame{
+public class ConsoleUI extends JFrame implements MouseListener {
     private Map<String, String> weaponNames = new HashMap<>();
     private Map<String, String> roomNames = new HashMap<>();
     private Map<String, String> characterNames = new HashMap<>();
     static Scanner input = new Scanner(System.in);
+    CluedoGame game;
     Graphics2D g2 = null;
     private Board board;
     private ArrayList<Player> players;
-    JPanel boardPanel = new JPanel();
-    JPanel rightPanel = new JPanel();
+    JPanel playersPanel = new JPanel();
     JPanel bottomPanel = new JPanel();
     JPanel mainPanel = new JPanel(new BorderLayout());
-    private boolean buttonPressed = false;
+    boolean buttonPressed = false;
+    JLabel firstDice = new JLabel();
+    JLabel secondDice = new JLabel();
 
     private int cellSize = 26; //change this to change the size of the window on screen
     private int cellsWide = 24;
@@ -28,12 +31,12 @@ public class ConsoleUI extends JFrame{
     private int height = cellSize*(cellsHigh+2);
     
     // dice images
-    ImageIcon dice1 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice1.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-    ImageIcon dice2 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice1.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-    ImageIcon dice3 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice3.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-    ImageIcon dice4 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice4.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-    ImageIcon dice5 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice5.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-    ImageIcon dice6 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice6.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+    ImageIcon dice1 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice1.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+    ImageIcon dice2 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice2.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+    ImageIcon dice3 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice3.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+    ImageIcon dice4 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice4.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+    ImageIcon dice5 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice5.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+    ImageIcon dice6 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice6.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
     // character card images
     ImageIcon scarlet = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/scarlet.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
     ImageIcon white = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/white.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
@@ -60,9 +63,10 @@ public class ConsoleUI extends JFrame{
     ImageIcon study = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Study.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
 
 
-    public ConsoleUI(Board board, ArrayList<Player> players) {
+    public ConsoleUI(Board board, ArrayList<Player> players, CluedoGame game) {
     	this.board = board;
     	this.players = players;
+    	this.game = game;
         createRooms();
         createCharacters();
         createWeapons();
@@ -112,7 +116,8 @@ public class ConsoleUI extends JFrame{
         });
 
 
-
+    firstDice.setIcon(dice1);
+    secondDice.setIcon(dice2);
         setJMenuBar(menuBar);
 
 
@@ -123,44 +128,75 @@ public class ConsoleUI extends JFrame{
         bottomPanel.setPreferredSize(new Dimension(100, 100));
 
 
-        JButton b = new JButton("button1");
-        JButton b2 = new JButton("button2");
-        //rightPanel.add(b2);
-        //bottomPanel.add(b);
 
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 
         JButton suggestButton = new JButton("Suggest");
         JButton accuseButton = new JButton("Accuse");
-        JButton rollButton = new JButton("Roll Dice");
 
-        rightPanel.setBackground(Color.lightGray);
+suggestButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-        JPanel dicePanel = new JPanel();
+    }
+});
+
+accuseButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+});
+
+        JPanel dicePanel = new JPanel(new GridBagLayout());
         JPanel buttonPanel = new JPanel();
-        JPanel playersPanel = new JPanel();
 
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-        buttonPanel.add(suggestButton);
-        buttonPanel.add(accuseButton);
-        dicePanel.add(rollButton);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 3;
+        gbc.weighty = 3;
+        gbc.anchor = GridBagConstraints.EAST;
+        dicePanel.add(firstDice, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        dicePanel.add(secondDice, gbc);
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = 2;
+
+        buttonPanel.setLayout(new GridBagLayout());
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+
+        buttonPanel.add(suggestButton, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        buttonPanel.add(accuseButton, gbc);
         //playersPanel.add(b);
 
-        buttonPanel.setBackground(Color.darkGray);
-        playersPanel.setBackground(Color.red);
-        dicePanel.setBackground(Color.blue);
+        buttonPanel.setBackground(Color.decode("#1B562E"));
+        playersPanel.setBackground(Color.decode("#0C9036"));
+        dicePanel.setBackground(Color.decode("#1B562E"));
         //bottomPanel.setBackground(Color.green);
       /*  mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         mainPanel.add(rightPanel, BorderLayout.EAST);*/
-    	setVisible(true);
+    	setVisible(false);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 4;
         gbc.weighty = 4;
         gbc.gridheight = 3;
+        gbc.gridwidth = 1;
 
         gbc.fill = GridBagConstraints.BOTH;
         mainPanel.add(new Board(players), gbc);
@@ -168,12 +204,14 @@ public class ConsoleUI extends JFrame{
         //mainPanel.add(playersPanel, gbc);
 
         gbc.weightx = 1;
-        gbc.weighty = 1;
+        gbc.weighty = 4;
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1 ;
         mainPanel.add(playersPanel, gbc);
 
+
+        gbc.weighty = 0.5;
         gbc.gridx = 1;
         gbc.gridy = 1;
         mainPanel.add(buttonPanel, gbc);
@@ -194,37 +232,148 @@ public class ConsoleUI extends JFrame{
         add(mainPanel);
     }
 
+    public void setDice(int one, int two){
+        firstDice.setIcon(getDice(one));
+        secondDice.setIcon(getDice(two));
+    }
     /**
      * Asks for input of the number of people playing
      *
      * @return the number of people playing
      */
     public int getNumPlayers() {
-        JDialog d = new JDialog();
-        JLabel label = new JLabel("Num of cells:");
-        String[] characterString= {"3", "4", "5", "6"};
-        JComboBox<String> num = new JComboBox<>(characterString);
-        JButton next = new JButton("Next");
-        d.setLayout(new FlowLayout());
-        d.add(label);
-        d.add(num);
-        d.add(next);
-        d.setSize(200, 200);
-        d.setVisible(true);
+            JDialog d = new JDialog(this);
+            d.setModal(true);
+            JLabel label = new JLabel("Num of cells:");
+            String[] characterString= {"3", "4", "5", "6"};
+            JComboBox<String> num = new JComboBox<>(characterString);
+            JButton next = new JButton("Next");
+            d.setLayout(new FlowLayout());
+            d.add(label);
+            d.add(num);
+            d.add(next);
+
+             d.setSize(200, 200);
+
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buttonPressed = true;
+                System.out.println("ye");
+                d.setModal(false);
+
                 d.dispose();
+
             }
         });
-        while(!buttonPressed){
-
-        }
+        d.setVisible(true);
         return Integer.parseInt(num.getSelectedItem().toString());
 
     }
 
+
+    public ArrayList<String> setCharacters(int numPlayer){
+        ArrayList names = new ArrayList();
+        buttonPressed = false;
+        JLabel label = new JLabel();
+            JDialog d = new JDialog(this, true);
+            d.setLayout(new GridLayout(10, 1));
+            JTextField name = new JTextField();
+            JRadioButton button1 = new JRadioButton("Miss Scarlett");
+            JRadioButton button2 = new JRadioButton("Colonel Mustard");
+            JRadioButton button3 = new JRadioButton("Mrs. White");
+            JRadioButton button4 = new JRadioButton("Mr. Green");
+            JRadioButton button5 = new JRadioButton("Mrs. Peacock");
+            JRadioButton button6 = new JRadioButton("Professor Plum");
+            ButtonGroup bg=new ButtonGroup();
+            bg.add(button1);
+            bg.add(button2);
+            bg.add(button3);
+            bg.add(button4);
+            bg.add(button5);
+            bg.add(button6);
+
+        JButton next = new JButton("Next");
+
+            next.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    names.add(name.getText());
+                    name.setText("");
+                    if (button1.isSelected()) {
+                        names.add(button1.getText());
+                        button1.setEnabled(false);
+                    } else if (button2.isSelected()) {
+                        names.add(button2.getText());
+                        button2.setEnabled(false);
+                    } else if (button3.isSelected()) {
+                        names.add(button3.getText());
+                        button3.setEnabled(false);
+                    } else if (button4.isSelected()) {
+                        names.add(button4.getText());
+                        button4.setEnabled(false);
+                    } else if (button5.isSelected()) {
+                        names.add(button5.getText());
+                        button5.setEnabled(false);
+                    } else if (button6.isSelected()) {
+                        names.add(button6.getText());
+                        button6.setEnabled(false);
+                    }
+                    buttonPressed = true;
+                    d.dispose();
+                }
+            });
+
+        for(int i = 0; i < numPlayer; i++) {
+            label.setText("Enter your name player: "+ (i+1));
+            d.add(label);
+            d.add(name);
+            d.add(button1);
+            d.add(button2);
+            d.add(button3);
+            d.add(button4);
+            d.add(button5);
+            d.add(button6);
+            if(button1.isEnabled()){
+                button1.setSelected(true);
+            }else if(button2.isEnabled()){
+                button2.setSelected(true);
+            }else if(button3.isEnabled()){
+                button3.setSelected(true);
+            }else if(button4.isEnabled()){
+                button4.setSelected(true);
+            }else if(button5.isEnabled()){
+                button5.setSelected(true);
+            }else if(button6.isEnabled()){
+                button6.setSelected(true);
+            }
+
+
+            d.add(next);
+            d.setSize(200, 200);
+            d.setVisible(true);
+        }
+        setVisible(true);
+        return names;
+    }
+
+
+    public void displayPlayers(ArrayList<Player> players){
+
+        playersPanel.setLayout(new GridLayout(players.size() + 6, 1));
+        for(int i = 0; i < players.size(); i++){
+            String text = "Player " + (i+1) + ": " + players.get(i).getName();
+            playersPanel.add(new JLabel(text));
+        }
+        playersPanel.add(new JLabel("Revolver = R"));
+        playersPanel.add(new JLabel("Dagger = -"));
+        playersPanel.add(new JLabel("Spanner = S"));
+        playersPanel.add(new JLabel("CandleStick = |"));
+        playersPanel.add(new JLabel("Rope = &"));
+        playersPanel.add(new JLabel("Lead Pipe = L"));
+
+
+
+    }
     /**
      * Asks for input of which direction to move player
      *
@@ -441,6 +590,7 @@ public class ConsoleUI extends JFrame{
                 bottomPanel.add(label);
             }
         }
+        bottomPanel.setVisible(true);
     }
 
 
@@ -488,6 +638,24 @@ public class ConsoleUI extends JFrame{
                 return hall;
             case "Lounge":
                 return lounge;
+        }
+        return null;
+    }
+
+    public ImageIcon getDice(int num){
+        switch (num){
+            case 1:
+                return dice1;
+            case 2:
+                return dice2;
+            case 3:
+                return dice3;
+            case 4:
+                return dice4;
+            case 5:
+                return dice5;
+            case 6:
+                return dice6;
         }
         return null;
     }
@@ -589,5 +757,31 @@ public class ConsoleUI extends JFrame{
 
     public void noCardShown() {
         System.out.println("\nNobody has those cards.");
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

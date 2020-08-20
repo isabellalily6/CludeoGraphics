@@ -11,6 +11,7 @@ public class Player {
     private int yPos;
     private char symbol; //symbol to represent the player on the board
     private static Set<java.lang.Character> playerNums = new HashSet<java.lang.Character>();
+    private String name;
 
     public Player(Character name, int startX, int startY, char symbol) {
         characterCard = name;
@@ -21,6 +22,13 @@ public class Player {
         playerNums.add(symbol);
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
     /**
      * Returns whether the player has lost the game or not
 

@@ -19,7 +19,7 @@ public class CluedoGame {
 
         makePlayers();
         board = new Board(players);
-        this.ui = new ConsoleUI(board, players);
+        this.ui = new ConsoleUI(board, players, this);
     }
 
     /**
@@ -35,19 +35,19 @@ public class CluedoGame {
             numPlayers = ui.getNumPlayers();
         }
 
-        // add the correct number of players to the game
-        currentPlayers.add(players.get(0));
-        currentPlayers.add(players.get(1));
-        currentPlayers.add(players.get(2));
-        if (numPlayers > 3) {
-            currentPlayers.add(players.get(3));
+       ArrayList list = ui.setCharacters(numPlayers);
+
+
+        for(int i = 0; i < numPlayers*2; i+=2){
+            for(Player p: players){
+                if(p.getCharacterCard().getName().equals(list.get(i+1).toString())){
+                    currentPlayers.add(p);
+                    p.setName(list.get(i).toString());
+                }
+            }
         }
-        if (numPlayers > 4) {
-            currentPlayers.add(players.get(4));
-        }
-        if (numPlayers > 5) {
-            currentPlayers.add(players.get(5));
-        }
+
+        ui.displayPlayers(currentPlayers);
 
         // set up the game
         createCards();
@@ -311,7 +311,10 @@ public class CluedoGame {
     }
 
     public int rollDice() {
-        return (int) ((Math.random() * 5 + 1) + (Math.random() * 5 + 1));
+        int one = (int) ((Math.random() * 5 + 1));
+        int two = (int) ((Math.random() * 5 + 1));
+        ui.setDice(one, two);
+        return one + two;
     }
 
     /**
