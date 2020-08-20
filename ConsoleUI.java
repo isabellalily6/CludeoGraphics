@@ -199,14 +199,29 @@ public class ConsoleUI extends JFrame{
      * @return the number of people playing
      */
     public int getNumPlayers() {
-        System.out.print("Enter the number of players to play (between 3-6): ");
-        String number = input.nextLine();
-        while (!number.matches("[3-6]\\d*")) { //check valid input between 3 and 6
-            invalidInput();
-            System.out.print("Enter the number of players to play (between 3-6): ");
-            number = input.nextLine();
+        JDialog d = new JDialog();
+        JLabel label = new JLabel("Num of cells:");
+        String[] characterString= {"3", "4", "5", "6"};
+        JComboBox<String> num = new JComboBox<>(characterString);
+        JButton next = new JButton("Next");
+        d.setLayout(new FlowLayout());
+        d.add(label);
+        d.add(num);
+        d.add(next);
+        d.setSize(200, 200);
+        d.setVisible(true);
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buttonPressed = true;
+                d.dispose();
+            }
+        });
+        while(!buttonPressed){
+
         }
-        return Integer.parseInt(number);
+        return Integer.parseInt(num.getSelectedItem().toString());
+
     }
 
     /**
