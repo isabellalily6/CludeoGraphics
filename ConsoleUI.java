@@ -26,7 +26,13 @@ public class ConsoleUI extends JFrame{
     private int width = cellSize*(cellsWide+2); //+2 leaves space around the boards as a border
     private int height = cellSize*(cellsHigh+2);
     
-
+    // dice images
+    ImageIcon dice1 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice1.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+    ImageIcon dice2 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice1.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+    ImageIcon dice3 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice3.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+    ImageIcon dice4 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice4.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+    ImageIcon dice5 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice5.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+    ImageIcon dice6 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice6.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
     // character card images
     ImageIcon scarlet = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/scarlet.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
     ImageIcon white = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/white.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
