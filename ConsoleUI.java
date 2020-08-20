@@ -1,12 +1,11 @@
 // Controls all output and input of the game
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
-import javax.swing.JFrame;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.management.remote.rmi.RMIConnectionImpl;
+import javax.swing.*;
 
 public class ConsoleUI extends JFrame{
     private Map<String, String> weaponNames = new HashMap<>();
@@ -16,13 +15,43 @@ public class ConsoleUI extends JFrame{
     Graphics2D g2 = null;
     private Board board;
     private ArrayList<Player> players;
-    
-    private int cellSize = 40; //change this to change the size of the window on screen
+    JPanel boardPanel = new JPanel();
+    JPanel rightPanel = new JPanel();
+    JPanel bottomPanel = new JPanel();
+    JPanel mainPanel = new JPanel(new BorderLayout());
+
+    private int cellSize = 26; //change this to change the size of the window on screen
     private int cellsWide = 24;
     private int cellsHigh = 25;
     private int width = cellSize*(cellsWide+2); //+2 leaves space around the boards as a border
     private int height = cellSize*(cellsHigh+2);
     
+
+    // character card images
+    ImageIcon scarlet = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/scarlet.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon white = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/white.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon peacock = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/peacock.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon mustard = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/mustard.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon green = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/green.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon plum = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/plum.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    // weapon card images
+    ImageIcon candleStick = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/CandleStick.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon dagger = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dagger.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon leadPipe = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/LeadPipe.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon revolver = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Revolver.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon rope = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Rope.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon spanner = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Spanner.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    // room card images
+    ImageIcon ballRoom = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/BallRoom.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon billiardRoom = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/BilliardRoom.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon conservatory = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Conservatory.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon diningRoom = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/diningRoom.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon hall = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Hall.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon kitchen = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Kitchen.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon library = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Library.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon lounge = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Lounge.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+    ImageIcon study = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Study.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+
 
     public ConsoleUI(Board board, ArrayList<Player> players) {
     	this.board = board;
@@ -38,63 +67,126 @@ public class ConsoleUI extends JFrame{
         setSize(width, height);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
 
+        JMenuBar menuBar=new JMenuBar();
+        JMenu menu =new JMenu("Menu");
+        JMenuItem i1 =new JMenuItem("Instructions");
+        JMenuItem i2=new JMenuItem("Exit");
+
+        menu.add(i1);
+        menu.add(i2);
+        menuBar.add(menu);
+
+
+        i1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog d = new JDialog();
+
+                // create a label
+                JLabel l = new JLabel("Instructions for Cluedo:");
+
+                d.add(l);
+                // setsize of dialog
+                d.setSize(200, 200);
+
+                // set visibility of dialog
+                d.setVisible(true);
+            }
+        });
+
+        i2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+
+
+        setJMenuBar(menuBar);
+
+
+
+//this.setLayout(new GridBagLayout());
+        mainPanel.setBackground(Color.cyan);
+
+        bottomPanel.setPreferredSize(new Dimension(100, 100));
+
+
+        JButton b = new JButton("button1");
+        JButton b2 = new JButton("button2");
+        //rightPanel.add(b2);
+        //bottomPanel.add(b);
+
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
+
+        JButton suggestButton = new JButton("Suggest");
+        JButton accuseButton = new JButton("Accuse");
+        JButton rollButton = new JButton("Roll Dice");
+
+        rightPanel.setBackground(Color.lightGray);
+
+        JPanel dicePanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
+        JPanel playersPanel = new JPanel();
+
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+
+        buttonPanel.add(suggestButton);
+        buttonPanel.add(accuseButton);
+        dicePanel.add(rollButton);
+        //playersPanel.add(b);
+
+        buttonPanel.setBackground(Color.darkGray);
+        playersPanel.setBackground(Color.red);
+        dicePanel.setBackground(Color.blue);
+        //bottomPanel.setBackground(Color.green);
+      /*  mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+        mainPanel.add(rightPanel, BorderLayout.EAST);*/
     	setVisible(true);
-    	
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 4;
+        gbc.weighty = 4;
+        gbc.gridheight = 3;
+
+        gbc.fill = GridBagConstraints.BOTH;
+        mainPanel.add(new Board(players), gbc);
+        //mainPanel.add(buttonPanel, gbc);
+        //mainPanel.add(playersPanel, gbc);
+
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridheight = 1 ;
+        mainPanel.add(playersPanel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        mainPanel.add(buttonPanel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        mainPanel.add(dicePanel, gbc);
+
+        gbc.weighty = 0.5;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+//       gbc.anchor = GridBagConstraints.PAGE_END;
+   //     gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        mainPanel.add(bottomPanel, gbc);
+
+
+        add(mainPanel);
     }
-    
-    public void paint(Graphics g) {
-    	
-    	g2 = (Graphics2D) g;
-    	
-    	
-    	for(int c = 0; c < cellsWide; c++) { //fill in walls
-    		for(int r = 0; r < cellsHigh; r++) {
-    			char cellSymbol = board.getCell(c, r).getSymbol();
-    			if(cellSymbol == 'X') {
-    				g2.setColor(Color.black);
-    			} else if(cellSymbol == '_') {
-    				g2.setColor(Color.cyan);
-    			} else {
-    				g2.setColor(Color.pink);
-    			}
-    			g2.fillRect(cellSize*(c+1), cellSize*(r+1), cellSize, cellSize);
-    		}
-    	}
-    	
-    	for(int i = 1; i < cellsWide+2; i++) { //vertical cell lines
-    		g2.drawLine(cellSize*i, cellSize, cellSize*i, height-cellSize);
-    	}
-    	
-    	for(int i = 1; i < cellsHigh+2; i++) { //horizontal cell lines
-    		g2.drawLine(cellSize, cellSize*i, width-cellSize, cellSize*i);
-    	}
-    	
-    	for(int i = 0; i < players.size(); i++) {
-    		Player player = players.get(i);
-    		int xPos = player.getxPos();
-    		int yPos = player.getyPos();
-    		if(player.getCharacterCard().getName() == "Miss Scarlett") {
-    			g2.setColor(new Color(255, 36, 0));
-    		} else if(player.getCharacterCard().getName() == "Colonel Mustard") {
-    			g2.setColor(new Color(255, 219, 88));
-    		} else if(player.getCharacterCard().getName() == "Mrs. White") {
-    			g2.setColor(new Color(255, 255, 255));
-    		} else if(player.getCharacterCard().getName() == "Mr. Green") {
-    			g2.setColor(new Color(56, 118, 29));
-    		} else if(player.getCharacterCard().getName() == "Mrs. Peacock") {
-    			g2.setColor(new Color(12, 12, 223));
-    		} else if(player.getCharacterCard().getName() == "Professor Plum") {
-    			g2.setColor(new Color(221, 160, 221));
-    		}
-    		
-    		g2.fillOval(cellSize*(xPos+1)+cellSize/8, cellSize*(yPos+1)+cellSize/8, cellSize*3/4, cellSize*3/4);
-    		 g2.setStroke(new BasicStroke(2));
-    		g2.setColor(Color.black);
-    		g2.drawOval(cellSize*(xPos+1)+cellSize/8, cellSize*(yPos+1)+cellSize/8, cellSize*3/4, cellSize*3/4);
-    	}
-    }
-    	
+
     /**
      * Asks for input of the number of people playing
      *
@@ -300,26 +392,7 @@ public class ConsoleUI extends JFrame{
         System.out.println("Your accusation was right. You have WON!");
     }
 
-    /**
-     * Asks for input of whether the player wants to see their hand
-     *
-     * @return true if they want to view their hand, otherwise false
-     */
-    public Boolean seeYourHand() {
-        System.out.println("Do you want to view your hand? Y or N: ");
-        String userInput = input.next();
-        while (!userInput.equalsIgnoreCase("Y") && !userInput.equalsIgnoreCase("N")) {
-            //error checking
-            invalidInput();
-            System.out.println("Do you want to view your hand? Y or N: ");
-            userInput = input.next();
-        }
-        if (userInput.equalsIgnoreCase("Y")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     /**
      * Displays the hand
@@ -330,8 +403,71 @@ public class ConsoleUI extends JFrame{
         int i = 1;
         for (Card c : hand) {
             System.out.println(i + ". " + c.getName());
+
+
             i++;
         }
+    }
+
+    public void showHand(ArrayList<Card> hand) {
+        bottomPanel.removeAll();
+        for (Card c : hand) {
+            ImageIcon icon = getCard(c.getName());
+            if(icon != null) {
+                JLabel label = new JLabel();
+                label.setIcon(icon);
+                bottomPanel.add(label);
+            }
+        }
+    }
+
+
+    public ImageIcon getCard(String name) {
+        switch (name) {
+            case "Candlestick":
+                return candleStick;
+            case "Dagger":
+                return dagger;
+            case "Lead Pipe":
+                return leadPipe;
+            case "Revolver":
+                return revolver;
+            case "Rope":
+                return rope;
+            case "Spanner":
+                return spanner;
+            case "Miss Scarlett":
+                return scarlet;
+            case "Colonel Mustard":
+                return mustard;
+            case "Mrs. White":
+                return white;
+            case "Mr. Green":
+                return green;
+            case "Mrs. Peacock":
+                return peacock;
+            case "Professor Plum":
+                return plum;
+            case "Dining Room":
+                return diningRoom;
+            case "Kitchen":
+                return kitchen;
+            case "Ball Room":
+                return ballRoom;
+            case "Conservatory":
+                return conservatory;
+            case "Billiard Room":
+                return billiardRoom;
+            case "Library":
+                return library;
+            case "Study":
+                return study;
+            case "Hall":
+                return hall;
+            case "Lounge":
+                return lounge;
+        }
+        return null;
     }
 
     /**

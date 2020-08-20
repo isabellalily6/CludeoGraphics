@@ -18,7 +18,7 @@ public class CluedoGame {
     public CluedoGame() {
 
         makePlayers();
-        board = new Board();
+        board = new Board(players);
         this.ui = new ConsoleUI(board, players);
     }
 
@@ -58,13 +58,14 @@ public class CluedoGame {
 
         // draw the board
         ui.drawWeapons(roomWeapons);
-        ui.repaint();
+        board.repaint();
 
         Player winningPlayer = null;
         while (!gameOver) {  // loops through stages 2-4 from section 2.6 'User Interface' from handout
             for (Player player : currentPlayers) {
                 if (!player.getHasLost()) {
                     ui.displayPlayersTurn(player.getSymbol());
+                    ui.showHand(player.getHand());
                     playersTurn(player);
                 }
                 if (gameOver) {
@@ -91,9 +92,6 @@ public class CluedoGame {
     public void playersTurn(Player player) {
         boolean asked = false;
         Set<Cell> spacesUsed = new HashSet<Cell>();
-        if (ui.seeYourHand()) {   // will print out your hand if true
-            ui.viewHand(player.getHand());
-        }
         int diceNum = rollDice();
         ui.displayDiceRoll(diceNum);
         while (diceNum > 0) {     //continue until no more moves left
