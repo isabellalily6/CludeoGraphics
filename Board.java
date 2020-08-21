@@ -2,16 +2,17 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board  extends JPanel {
+public class Board  extends JPanel implements MouseListener {
     private int WIDTH = 24;
     private int HEIGHT = 25;
     private Cell[][] board = new Cell[WIDTH][HEIGHT]; // storing each cell in position
 
     private ArrayList<Player> players;
-    JFrame f;
     Graphics2D g2 = null;
     private int cellSize = 18; //change this to change the size of the window on screen
     private int cellsWide = 24;
@@ -31,7 +32,6 @@ public class Board  extends JPanel {
      * @param players
      */
     public void drawBoard(ArrayList<Player> players) {
-    	
         Cell[][] tempBoard = getPlayerBoard(players);
         for (int y = 0; y < HEIGHT; y++) {
             System.out.println();
@@ -103,18 +103,20 @@ public class Board  extends JPanel {
      * @return null if out of bounds, otherwise the Cell being clicked on
      */
     public Cell getCellFromPixel(int x, int y) {
-    	
     	//return null if out of bounds
-    	if(x < cellSize || x > width - cellSize || y < cellSize || y > height - cellSize) {
+    	if(x < cellSize || x > width - cellSize || y < cellSize || y > (height + cellsHigh*3)) {
     		return null;
     	}
-    	
-    	//positions from the top left corner of the board, not the screen
-    	x -=  cellSize;
-    	y -= cellSize;
-    	
+
+        //positions from the top left corner of the board, not the screen
+        x -=  cellSize;
+        y -= cellSize;
+
+        // calculates the row based on the off set
+        int row = y/cellSize;
+
     	//return the cell
-    	return board[x / cellSize][y / cellSize];
+    	return board[x / cellSize][row-3];
     }
     
     /**
@@ -212,6 +214,31 @@ public class Board  extends JPanel {
                 count += 1;
             }
         }
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("released");
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println("released");
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        System.out.println("released");
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }

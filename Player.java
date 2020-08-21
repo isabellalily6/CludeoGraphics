@@ -12,6 +12,7 @@ public class Player {
     private char symbol; //symbol to represent the player on the board
     private static Set<java.lang.Character> playerNums = new HashSet<java.lang.Character>();
     private String name;
+    private Set<Cell> placesMoved = new HashSet<>();
 
     public Player(Character name, int startX, int startY, char symbol) {
         characterCard = name;
@@ -20,6 +21,18 @@ public class Player {
         xPos = startX;
         yPos = startY;
         playerNums.add(symbol);
+    }
+
+    public void addPlacesMoved(Cell placeMoved) {
+        this.placesMoved.add(placeMoved);
+    }
+
+    public void clearPlacesMoved() {
+        this.placesMoved.clear();
+    }
+
+    public Set<Cell> getPlacesMoved() {
+        return placesMoved;
     }
 
     public void setName(String name){

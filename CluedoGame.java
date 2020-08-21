@@ -14,6 +14,7 @@ public class CluedoGame {
     private Map<java.lang.Character, String> roomNames = new HashMap<>();
     private ConsoleUI ui;
     private Boolean gameOver = false;
+    private int diceNum = 0;
 
     public CluedoGame() {
 
@@ -83,6 +84,30 @@ public class CluedoGame {
     }
     
 
+    public String getMove(Cell c, Player p){
+        if(c == null){
+            return "";
+        }
+        int playerX = p.getxPos();
+        int playerY = p.getyPos();
+        int cellX = c.getxCoord();
+        int cellY = c.getyCoord();
+        int colDiff = playerX - cellX;
+        int rowDiff = playerY - cellY;
+        if(colDiff == 1 && rowDiff == 0){
+            return "L";
+        }else if(colDiff == -1 && rowDiff == 0){
+            return "R";
+        }else if(colDiff == 0 && rowDiff == 1){
+            return "U";
+        }else if(colDiff == 0 && rowDiff == -1){
+            return "D";
+        }
+        return "";
+
+
+    }
+
     /**
      * Runs through a players turn including; dice roll, moves, suggestion etc
      * Will be used every time it's a new players turn
@@ -90,7 +115,7 @@ public class CluedoGame {
      * @param player
      */
     public void playersTurn(Player player) {
-        boolean asked = false;
+        boolean asked = true;
         Set<Cell> spacesUsed = new HashSet<Cell>();
         int diceNum = rollDice();
         ui.displayDiceRoll(diceNum);
@@ -106,11 +131,11 @@ public class CluedoGame {
             }
             if (diceNum > 0) {
                 ui.displayMovesLeft(diceNum);
-                Boolean validMove = player.move(ui.getMoves(), board.getPlayerBoard(players), spacesUsed);
+                Boolean validMove = player.move(getMove(ui.getMoves(), player), board.getPlayerBoard(players), spacesUsed);
                 // error checking
                 while (!validMove) {
                     ui.invalidInput();
-                    validMove = player.move(ui.getMoves(), board.getPlayerBoard(players), spacesUsed);
+                    validMove = player.move(getMove(ui.getMoves(), player), board.getPlayerBoard(players), spacesUsed);
                 }
                 ui.drawWeapons(roomWeapons);
                 ui.repaint();

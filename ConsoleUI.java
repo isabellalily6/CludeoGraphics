@@ -5,6 +5,7 @@ import sun.misc.JavaLangAccess;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.management.remote.rmi.RMIConnectionImpl;
 import javax.swing.*;
 
@@ -13,8 +14,9 @@ public class ConsoleUI extends JFrame implements MouseListener {
     private Map<String, String> roomNames = new HashMap<>();
     private Map<String, String> characterNames = new HashMap<>();
     static Scanner input = new Scanner(System.in);
+    AtomicBoolean mousePressed = new AtomicBoolean(false);
+    Cell movedCell = null;
     CluedoGame game;
-    Graphics2D g2 = null;
     private Board board;
     private ArrayList<Player> players;
     JPanel playersPanel = new JPanel();
@@ -29,7 +31,7 @@ public class ConsoleUI extends JFrame implements MouseListener {
     private int cellsHigh = 25;
     private int width = cellSize*(cellsWide+2); //+2 leaves space around the boards as a border
     private int height = cellSize*(cellsHigh+2);
-    
+
     // dice images
     ImageIcon dice1 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice1.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
     ImageIcon dice2 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice2.jpg")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
@@ -74,6 +76,7 @@ public class ConsoleUI extends JFrame implements MouseListener {
     }
     
     private void initUI() {
+        addMouseListener(this);
         setTitle("Cluedo Game");
         setSize(width, height);
         setLocationRelativeTo(null);
@@ -258,7 +261,6 @@ accuseButton.addActionListener(new ActionListener() {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("ye");
                 d.setModal(false);
 
                 d.dispose();
@@ -379,10 +381,17 @@ accuseButton.addActionListener(new ActionListener() {
      *
      * @return "U", "D", "L", "R" indicating up, down, left, or right
      */
-    public String getMoves() {
+    public Cell getMoves() {
+        mousePressed.set(false);
         System.out.println("Do you want to move UDLR? ");
-        String move = input.next();
-        return move;
+
+        while(!mousePressed.get()){
+            //System.out.println(mousePressed);
+
+        }
+
+        return movedCell;
+
     }
 
     public void displayPlayersTurn(char player) {
@@ -407,10 +416,51 @@ accuseButton.addActionListener(new ActionListener() {
      * @return "S", "A", "N" indication suggestion, accusation or neither
      */
     public String checkSuggestion() {
+        final String[] text = {""};
         System.out.println("Do you want to make a suggestion (S), an Accusation (A) or neither (N)? ");
         System.out.println("Type S for suggestion, A for accusation and N for neither");
-        String userInput = input.next();
-        return userInput;
+        JDialog makeSuggestion = new JDialog(this, true);
+        makeSuggestion.setSize(150,200);
+        makeSuggestion.setLayout(new GridLayout(5, 1));
+        // three radio buttons
+        // one next button
+        JLabel question = new JLabel("Do you want to make a:");
+        JRadioButton suggest = new JRadioButton("Suggestion", true);
+        JRadioButton accuse = new JRadioButton("Accusation");
+        JRadioButton none = new JRadioButton("Neither");
+        JButton next = new JButton("next");
+        ButtonGroup bg=new ButtonGroup();
+        bg.add(suggest);
+        bg.add(accuse);
+        bg.add(none);
+
+        makeSuggestion.add(question);
+        makeSuggestion.add(suggest);
+        makeSuggestion.add(accuse);
+        makeSuggestion.add(none);
+        makeSuggestion.add(next);
+
+
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(suggest.isSelected()){
+                    text[0] = "S";
+                }else if(accuse.isSelected()){
+                    text[0] = "A";
+                }else if(none.isSelected()){
+                    text[0] = "N";
+                }
+                makeSuggestion.dispose();
+            }
+        });
+
+
+        makeSuggestion.setVisible(true);
+
+        System.out.println(text[0]);
+
+        return text[0];
     }
 
     /**
@@ -424,6 +474,21 @@ accuseButton.addActionListener(new ActionListener() {
         String room = null;
         String character = null;
         String weapon = null;
+
+
+        JLabel label = new JLabel();
+        JDialog d = new JDialog(this, true);
+        d.setLayout(new GridLayout(10, 1));
+        JTextField name = new JTextField();
+        JRadioButton button1 = new JRadioButton("Miss Scarlett");
+        JRadioButton button2 = new JRadioButton("Colonel Mustard");
+        JRadioButton button3 = new JRadioButton("Mrs. White");
+        JRadioButton button4 = new JRadioButton("Mr. Green");
+        JRadioButton button5 = new JRadioButton("Mrs. Peacock");
+        JRadioButton button6 = new JRadioButton("Professor Plum");
+        ButtonGroup bg=new ButtonGroup();
+        // Radio buttons here. Grid Layout
+
 
         if (!suggest) { //if accusation then ask user for a room, if it's a suggestion then we do not need to ask
             //prints out all room options
@@ -761,18 +826,23 @@ accuseButton.addActionListener(new ActionListener() {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
-
+        //System.out.println("clicked");
+/*        Cell c = board.getCellFromPixel(e.getX(), e.getY());
+        movedCell = c;
+        mousePressed = true;*/
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        Cell c = board.getCellFromPixel(e.getX(), e.getY());
+        movedCell = c;
+        mousePressed.set(true);
 
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        //System.out.println("released");
     }
 
     @Override
