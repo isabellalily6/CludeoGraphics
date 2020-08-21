@@ -1,5 +1,6 @@
 // Controls all output and input of the game
 
+import jdk.nashorn.internal.scripts.JD;
 import sun.misc.JavaLangAccess;
 
 import java.awt.*;
@@ -134,22 +135,7 @@ public class ConsoleUI extends JFrame implements MouseListener {
 
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 
-        JButton suggestButton = new JButton("Suggest");
-        JButton accuseButton = new JButton("Accuse");
 
-suggestButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-});
-
-accuseButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-});
 
         JPanel dicePanel = new JPanel(new GridBagLayout());
         JPanel buttonPanel = new JPanel();
@@ -180,10 +166,8 @@ accuseButton.addActionListener(new ActionListener() {
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.BOTH;
 
-        buttonPanel.add(suggestButton, gbc);
         gbc.gridx = 0;
         gbc.gridy = 1;
-        buttonPanel.add(accuseButton, gbc);
         //playersPanel.add(b);
 
         buttonPanel.setBackground(Color.decode("#1B562E"));
@@ -479,14 +463,23 @@ accuseButton.addActionListener(new ActionListener() {
         JLabel label2 = new JLabel("Pick a Weapon:");
         JLabel label3 = new JLabel("Pick a Room");
         JDialog d = new JDialog(this, true);
-        d.setLayout(new GridLayout(10, 1));
-        JTextField name = new JTextField();
-        JRadioButton button1 = new JRadioButton("Miss Scarlett");
+        if(suggest){
+            d.setLayout(new GridLayout(15, 1));
+        }else{
+            d.setLayout(new GridLayout(25, 1));
+        }
+        JRadioButton button1 = new JRadioButton("Miss Scarlett", true);
+        button1.setActionCommand("Miss Scarlett");
         JRadioButton button2 = new JRadioButton("Colonel Mustard");
+       button2.setActionCommand("Colonel Mustard");
         JRadioButton button3 = new JRadioButton("Mrs. White");
+       button3.setActionCommand("Mrs. White");
         JRadioButton button4 = new JRadioButton("Mr. Green");
+       button4.setActionCommand("Mr. Green");
         JRadioButton button5 = new JRadioButton("Mrs. Peacock");
+       button5.setActionCommand("Mrs. Peacock");
         JRadioButton button6 = new JRadioButton("Professor Plum");
+       button6.setActionCommand("Professor Plum");
         bg.add(button1);
         bg.add(button2);
         bg.add(button3);
@@ -494,27 +487,42 @@ accuseButton.addActionListener(new ActionListener() {
         bg.add(button5);
         bg.add(button6);
         // Radio buttons here. Grid Layout
-        JRadioButton weaponButt1 = new JRadioButton("Candlestick");
+        JRadioButton weaponButt1 = new JRadioButton("Candlestick", true);
+       weaponButt1.setActionCommand("Candlestick");
         JRadioButton weaponButt2 = new JRadioButton("Dagger");
+       weaponButt2.setActionCommand("Dagger");
         JRadioButton weaponButt3 = new JRadioButton("LeadPipe");
+       weaponButt3.setActionCommand("LeadPipe");
         JRadioButton weaponButt4 = new JRadioButton("Revolver");
+       weaponButt4.setActionCommand("Revolver");
         JRadioButton weaponButt5 = new JRadioButton("Rope");
+       weaponButt5.setActionCommand("Rope");
         JRadioButton weaponButt6 = new JRadioButton("Spanner");
+       weaponButt6.setActionCommand("Spanner");
         bg2.add(weaponButt1);
         bg2.add(weaponButt2);
         bg2.add(weaponButt3);
         bg2.add(weaponButt4);
         bg2.add(weaponButt5);
         bg2.add(weaponButt6);
-        JRadioButton roomButt1 = new JRadioButton("Ballroom");
+        JRadioButton roomButt1 = new JRadioButton("Ballroom", true);
+        roomButt1.setActionCommand("Ballroom");
         JRadioButton roomButt2 = new JRadioButton("Billiard Room");
+       roomButt2.setActionCommand("Billiard Room");
         JRadioButton roomButt3 = new JRadioButton("Conservatory");
+       roomButt3.setActionCommand("Conservatory");
         JRadioButton roomButt4 = new JRadioButton("Dining Room");
+       roomButt4.setActionCommand("Dining Room");
         JRadioButton roomButt5 = new JRadioButton("Hall");
+       roomButt5.setActionCommand("Hall");
         JRadioButton roomButt6 = new JRadioButton("Kitchen");
+       roomButt6.setActionCommand("Kitchen");
         JRadioButton roomButt7 = new JRadioButton("Library");
+       roomButt7.setActionCommand("Library");
         JRadioButton roomButt8 = new JRadioButton("Lounge");
+       roomButt8.setActionCommand("Lounge");
         JRadioButton roomButt9 = new JRadioButton("Study");
+       roomButt9.setActionCommand("Study");
         bg3.add(roomButt1);
         bg3.add(roomButt2);
         bg3.add(roomButt3);
@@ -557,7 +565,8 @@ accuseButton.addActionListener(new ActionListener() {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String character = bg.getSelection().toString();
+                System.out.println(bg.getSelection().getActionCommand());
+                String character = bg.getSelection().getActionCommand();
                 String weapon = bg2.getSelection().toString();
                 murder.add(character);
                 murder.add(weapon);        
@@ -569,6 +578,10 @@ accuseButton.addActionListener(new ActionListener() {
                 d.dispose();            
             }
         });
+
+        d.setSize(100, 600);
+        d.setVisible(true);
+        System.out.println(murder.get(0));
         return murder;
     }
 
@@ -641,11 +654,43 @@ accuseButton.addActionListener(new ActionListener() {
     }
 
     public void wrongAccusation() {
-        System.out.println("Your accusation was wrong. You have lost!");
+        JDialog d = new JDialog(this, true);
+        d.setLayout(new GridLayout(2, 1));
+        JLabel label = new JLabel("Your accusation was wrong. You have lost!");
+        JButton ok = new JButton("OK");
+
+        d.add(label);
+        d.add(ok);
+
+        ok.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d.dispose();
+            }
+        });
+
+        d.setSize(100, 100);
+        d.setVisible(true);
     }
 
     public void correctAccusation() {
-        System.out.println("Your accusation was right. You have WON!");
+        JDialog d = new JDialog(this, true);
+        d.setLayout(new GridLayout(2, 1));
+        JLabel label = new JLabel("Your accusation was right. You have WON!");
+        JButton ok = new JButton("OK");
+
+        d.add(label);
+        d.add(ok);
+
+        ok.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d.dispose();
+            }
+        });
+
+        d.setSize(100, 100);
+        d.setVisible(true);
     }
 
 
@@ -751,16 +796,37 @@ accuseButton.addActionListener(new ActionListener() {
      * @return true if they want to make an accusation, otherwise false
      */
     public boolean shouldMakeAccusation() {
-        System.out.println("Do you want to make an Accusation? ");
-        System.out.println("Enter Y or N");
-        String userInput = input.next();
-        while(!userInput.equalsIgnoreCase("Y") && !userInput.equalsIgnoreCase("N")){
-            invalidInput();
-            System.out.println("Enter Y or N");
-            userInput = input.next();
-        }
+ArrayList<String> answer = new ArrayList<>();
+        JDialog d = new JDialog(this, true);
+        d.setLayout(new GridLayout(3, 1));
+        JLabel label = new JLabel("Do you want to make an Accusation?");
+        JButton yes = new JButton("Yes");
+        JButton no = new JButton("No");
 
-        if (userInput.equalsIgnoreCase("Y")) {
+        d.add(label);
+        d.add(yes);
+        d.add(no);
+
+        yes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                answer.add("Y");
+                d.dispose();
+            }
+        });
+        no.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                answer.add("N");
+                d.dispose();
+            }
+        });
+
+        d.setSize(100, 100);
+        d.setVisible(true);
+
+
+        if (answer.get(0).equalsIgnoreCase("Y")) {
             return true;
         } else {
             return false;
@@ -773,15 +839,41 @@ accuseButton.addActionListener(new ActionListener() {
      * @return true if they want to keep moving, otherwise false
      */
     public boolean continueMove() {
-        System.out.println("You are in a room!!!");
-        System.out.println("Do you want to use the rest of your moves? Y or N");
-        String userInput = input.next();
-        while (!userInput.equalsIgnoreCase("Y") && !userInput.equalsIgnoreCase("N")) {
-            invalidInput();
-            System.out.println("Do you want to use the rest of your moves? Y or N");
-            userInput = input.next();
-        }
-        if (userInput.equalsIgnoreCase("Y")) {
+        ArrayList<String> answer = new ArrayList<>();
+        JDialog d = new JDialog(this, true);
+        d.setLayout(new GridLayout(4, 1));
+        JLabel label = new JLabel("You are in a room!!!");
+        JLabel question = new JLabel("Do you want to use the rest of your moves? Y or N");
+        JButton yes = new JButton("Yes");
+        JButton no = new JButton("No");
+
+        d.add(label);
+        d.add(question);
+        d.add(yes);
+        d.add(no);
+
+        yes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                answer.add("Y");
+                System.out.println(answer.get(0));
+                d.dispose();
+            }
+        });
+        no.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                answer.add("N");
+                System.out.println(answer.get(0));
+                d.dispose();
+            }
+        });
+
+        d.setSize(100, 100);
+        d.setVisible(true);
+
+
+        if (answer.get(0).equalsIgnoreCase("Y")) {
             return true;
         } else {
             return false;
@@ -789,7 +881,16 @@ accuseButton.addActionListener(new ActionListener() {
     }
 
     public void displayCard(Player withCard, Card toShow) {
-        System.out.println("\nPlayer " + withCard.getSymbol() + " showed you " + toShow.getName() + ".");
+        JDialog d = new JDialog(this, true);
+        d.setLayout(new GridLayout(2, 1));
+        JLabel title = new JLabel("Player " + withCard.getSymbol() + " showed you: ");
+        JLabel icon = new JLabel();
+        icon.setIcon(getCard(toShow.getName()));
+
+        d.add(title);
+        d.add(icon);
+        d.setSize(200, 500);
+        d.setVisible(true);
     }
 
     /**
@@ -799,31 +900,30 @@ accuseButton.addActionListener(new ActionListener() {
      * @param chooseFrom
      */
     public void chooseCard(Player choosing, ArrayList<Card> chooseFrom) {
-        System.out.println("\nPlayer " + choosing.getSymbol() + ", choose a card to show:");
-        viewHand(chooseFrom);
-        System.out.print("Number: ");
-        String choose = input.next();
+        JDialog d = new JDialog(this, true);
 
-        while (!choose.matches("\\d+")) {
-            invalidInput();
-            System.out.print("Number: ");
-            choose = input.nextLine();
+        JLabel title = new JLabel("Player " + choosing.getSymbol() + ", choose a card to show:");
+        d.add(title);
+        ButtonGroup bg = new ButtonGroup();
+
+        for(Card c: chooseFrom){
+            JRadioButton button = new JRadioButton(c.getName(), true);
+            button.setActionCommand(c.getName());
+            bg.add(button);
+            d.add(button);
         }
 
-        int chosen = Integer.parseInt(choose) - 1;
-        // error checking
-        while (chosen < 0 || chosen >= chooseFrom.size()) {   // if out of bounds
-            invalidInput();
-            System.out.print("Number: ");
-            choose = input.nextLine();
-            while (!choose.matches("\\d+")) {
-                invalidInput();
-                System.out.print("Number: ");
-                choose = input.nextLine();
+        JButton next = new JButton("next");
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displayCard(choosing, new Card(bg.getSelection().getActionCommand()));
+                d.dispose();
             }
-            chosen = Integer.parseInt(choose) - 1;
-        }
-        System.out.println("\nPlayer " + choosing.getSymbol() + " showed you " + chooseFrom.get(chosen).getName() + ".");
+        });
+
+        d.setSize(100, 100);
+        d.setVisible(true);
     }
 
     public void drawWeapons(Map<String, String> map) {
@@ -841,7 +941,22 @@ accuseButton.addActionListener(new ActionListener() {
     }
 
     public void noCardShown() {
-        System.out.println("\nNobody has those cards.");
+        JDialog d = new JDialog();
+        JLabel label = new JLabel("No one has those cards");
+        JButton ok = new JButton("OK");
+
+        d.add(label);
+        d.add(ok);
+
+        ok.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d.dispose();
+            }
+        });
+
+        d.setSize(100, 100);
+        d.setVisible(true);
     }
 
     @Override

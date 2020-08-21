@@ -115,7 +115,7 @@ public class CluedoGame {
      * @param player
      */
     public void playersTurn(Player player) {
-        boolean asked = true;
+        boolean asked = false;
         Set<Cell> spacesUsed = new HashSet<Cell>();
         int diceNum = rollDice();
         ui.displayDiceRoll(diceNum);

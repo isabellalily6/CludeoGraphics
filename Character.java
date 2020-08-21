@@ -3,8 +3,9 @@
 public class Character extends Card {
     private String name;
 
-    public Character(String Charname) {
-        name = Charname;
+    public Character(String charName) {
+        super(charName);
+        name = charName;
     }
 
     public String getName() {
