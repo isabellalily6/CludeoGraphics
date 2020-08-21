@@ -469,14 +469,15 @@ accuseButton.addActionListener(new ActionListener() {
      * @param suggest (true if suggestion, false if accusation)
      * @return ArrayList of Strings describing the 3 cards they chose
      */
-    public ArrayList<String> getMurder(Boolean suggest) {
+   public ArrayList<String> getMurder(Boolean suggest) {
         ArrayList<String> murder = new ArrayList<>();
-        String room = null;
-        String character = null;
-        String weapon = null;
+        ButtonGroup bg=new ButtonGroup();
+        ButtonGroup bg2 = new ButtonGroup();
+        ButtonGroup bg3 = new ButtonGroup();
 
-
-        JLabel label = new JLabel();
+        JLabel label1 = new JLabel("Pick a Character:");
+        JLabel label2 = new JLabel("Pick a Weapon:");
+        JLabel label3 = new JLabel("Pick a Room");
         JDialog d = new JDialog(this, true);
         d.setLayout(new GridLayout(10, 1));
         JTextField name = new JTextField();
@@ -486,69 +487,88 @@ accuseButton.addActionListener(new ActionListener() {
         JRadioButton button4 = new JRadioButton("Mr. Green");
         JRadioButton button5 = new JRadioButton("Mrs. Peacock");
         JRadioButton button6 = new JRadioButton("Professor Plum");
-        ButtonGroup bg=new ButtonGroup();
+        bg.add(button1);
+        bg.add(button2);
+        bg.add(button3);
+        bg.add(button4);
+        bg.add(button5);
+        bg.add(button6);
         // Radio buttons here. Grid Layout
+        JRadioButton weaponButt1 = new JRadioButton("Candlestick");
+        JRadioButton weaponButt2 = new JRadioButton("Dagger");
+        JRadioButton weaponButt3 = new JRadioButton("LeadPipe");
+        JRadioButton weaponButt4 = new JRadioButton("Revolver");
+        JRadioButton weaponButt5 = new JRadioButton("Rope");
+        JRadioButton weaponButt6 = new JRadioButton("Spanner");
+        bg2.add(weaponButt1);
+        bg2.add(weaponButt2);
+        bg2.add(weaponButt3);
+        bg2.add(weaponButt4);
+        bg2.add(weaponButt5);
+        bg2.add(weaponButt6);
+        JRadioButton roomButt1 = new JRadioButton("Ballroom");
+        JRadioButton roomButt2 = new JRadioButton("Billiard Room");
+        JRadioButton roomButt3 = new JRadioButton("Conservatory");
+        JRadioButton roomButt4 = new JRadioButton("Dining Room");
+        JRadioButton roomButt5 = new JRadioButton("Hall");
+        JRadioButton roomButt6 = new JRadioButton("Kitchen");
+        JRadioButton roomButt7 = new JRadioButton("Library");
+        JRadioButton roomButt8 = new JRadioButton("Lounge");
+        JRadioButton roomButt9 = new JRadioButton("Study");
+        bg3.add(roomButt1);
+        bg3.add(roomButt2);
+        bg3.add(roomButt3);
+        bg3.add(roomButt4);
+        bg3.add(roomButt5);
+        bg3.add(roomButt6);
+        bg3.add(roomButt7);
+        bg3.add(roomButt8);
+        bg3.add(roomButt9);
 
+        d.add(label1);
+        d.add(button1);
+        d.add(button2);
+        d.add(button3);
+        d.add(button4);
+        d.add(button5);
+        d.add(button6);
+        d.add(label2);
+        d.add(weaponButt1);
+        d.add(weaponButt2);
+        d.add(weaponButt3);
+        d.add(weaponButt4);
+        d.add(weaponButt5);
+        d.add(weaponButt6);
+        if(!suggest){
+            d.add(label3);
+            d.add(roomButt1);
+            d.add(roomButt2);
+            d.add(roomButt3);
+            d.add(roomButt4);
+            d.add(roomButt5);
+            d.add(roomButt6);
+            d.add(roomButt7);
+            d.add(roomButt8);
+            d.add(roomButt9);
+        }
+        JButton next = new JButton("Next");
+        d.add(next);
 
-        if (!suggest) { //if accusation then ask user for a room, if it's a suggestion then we do not need to ask
-            //prints out all room options
-            for (String c : roomNames.keySet()) {
-                System.out.println("Type " + c + " for " + roomNames.get(c));
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String character = bg.getSelection().toString();
+                String weapon = bg2.getSelection().toString();
+                murder.add(character);
+                murder.add(weapon);        
+                if(!suggest){
+                    String room = bg3.getSelection().toString();
+                    murder.add(room);
+                }
+                buttonPressed = true;
+                d.dispose();            
             }
-
-            // asks user for room
-            System.out.println("Pick a room card: ");
-            String roomInput = input.next();
-            room = roomNames.get(roomInput);
-
-            // error check here
-            while (room == null) {
-                invalidInput();
-                System.out.println("Pick a room card: ");
-                roomInput = input.next();
-                room = roomNames.get(roomInput);
-            }
-            murder.add(room);
-        }
-
-        //prints out all character options
-        for (String c : characterNames.keySet()) {
-            System.out.println("Type " + c + " for " + characterNames.get(c));
-        }
-
-        // asks user for character
-        System.out.println("Pick a character card: ");
-        String charInput = input.next();
-        character = characterNames.get(charInput);
-
-        // error check here
-        while (character == null) {
-            invalidInput();
-            System.out.println("Pick a character card: ");
-            charInput = input.next();
-            character = characterNames.get(charInput);
-        }
-        murder.add(character);
-
-        //prints out all weapon options
-        for (String c : weaponNames.keySet()) {
-            System.out.println("Type " + c + " for " + weaponNames.get(c));
-        }
-
-        // asks user for weapon
-        System.out.println("Pick a weapon card: ");
-        String weaponInput = input.next();
-        weapon = weaponNames.get(weaponInput);
-
-        // error check here
-        while (weapon == null) {
-            invalidInput();
-            System.out.println("Pick a weapon card: ");
-            weaponInput = input.next();
-            weapon = weaponNames.get(weaponInput);
-        }
-        murder.add(weapon);
-
+        });
         return murder;
     }
 
