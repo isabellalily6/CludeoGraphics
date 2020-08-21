@@ -16,7 +16,7 @@ public class Board  extends JPanel {
     private int cellSize = 18; //change this to change the size of the window on screen
     private int cellsWide = 24;
     private int cellsHigh = 25;
-    private int width = cellSize*(cellsWide+2); //+2 leaves space around the boards as a border
+    private int width = cellSize*(cellsWide+2); //+2 leaves space around the board as a border
     private int height = cellSize*(cellsHigh+2);
 
     public Board(ArrayList<Player> players) {
@@ -46,14 +46,14 @@ public class Board  extends JPanel {
 
     public void paint(Graphics g) {
         g2 = (Graphics2D) g;
-        for(int c = 0; c < cellsWide; c++) { //fill in walls
+        for(int c = 0; c < cellsWide; c++) { //fill in cells
             for(int r = 0; r < cellsHigh; r++) {
                 char cellSymbol = getCell(c, r).getSymbol();
-                if(cellSymbol == 'X') {
+                if(cellSymbol == 'X') { //wall
                     g2.setColor(Color.black);
-                } else if(cellSymbol == '_') {
+                } else if(cellSymbol == '_') { //floor
                     g2.setColor(Color.cyan);
-                } else {
+                } else { //room
                     g2.setColor(Color.pink);
                 }
                 g2.fillRect(cellSize*(c+1), cellSize*(r+1), cellSize, cellSize);
@@ -72,6 +72,8 @@ public class Board  extends JPanel {
             Player player = players.get(i);
             int xPos = player.getxPos();
             int yPos = player.getyPos();
+            
+            //set the colour of the player
             if(player.getCharacterCard().getName() == "Miss Scarlett") {
                 g2.setColor(new Color(255, 36, 0));
             } else if(player.getCharacterCard().getName() == "Colonel Mustard") {
@@ -86,14 +88,35 @@ public class Board  extends JPanel {
                 g2.setColor(new Color(221, 160, 221));
             }
 
+            //draw the player
             g2.fillOval(cellSize*(xPos+1)+cellSize/8, cellSize*(yPos+1)+cellSize/8, cellSize*3/4, cellSize*3/4);
             g2.setStroke(new BasicStroke(2));
             g2.setColor(Color.black);
             g2.drawOval(cellSize*(xPos+1)+cellSize/8, cellSize*(yPos+1)+cellSize/8, cellSize*3/4, cellSize*3/4);
         }
     }
-
-
+    
+    /**
+     * Gets a Cell based on x and y positions of a mouse click
+     *
+     * @param x, y
+     * @return null if out of bounds, otherwise the Cell being clicked on
+     */
+    public Cell getCellFromPixel(int x, int y) {
+    	
+    	//return null if out of bounds
+    	if(x < cellSize || x > width - cellSize || y < cellSize || y > height - cellSize) {
+    		return null;
+    	}
+    	
+    	//positions from the top left corner of the board, not the screen
+    	x -=  cellSize;
+    	y -= cellSize;
+    	
+    	//return the cell
+    	return board[x / cellSize][y / cellSize];
+    }
+    
     /**
      * Adds all players the player on the board in their current position
      *
