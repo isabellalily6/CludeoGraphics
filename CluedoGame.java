@@ -84,29 +84,6 @@ public class CluedoGame {
     }
     
 
-    public String getMove(Cell c, Player p){
-        if(c == null){
-            return "";
-        }
-        int playerX = p.getxPos();
-        int playerY = p.getyPos();
-        int cellX = c.getxCoord();
-        int cellY = c.getyCoord();
-        int colDiff = playerX - cellX;
-        int rowDiff = playerY - cellY;
-        if(colDiff == 1 && rowDiff == 0){
-            return "L";
-        }else if(colDiff == -1 && rowDiff == 0){
-            return "R";
-        }else if(colDiff == 0 && rowDiff == 1){
-            return "U";
-        }else if(colDiff == 0 && rowDiff == -1){
-            return "D";
-        }
-        return "";
-
-
-    }
 
     /**
      * Runs through a players turn including; dice roll, moves, suggestion etc
@@ -131,11 +108,11 @@ public class CluedoGame {
             }
             if (diceNum > 0) {
                 ui.displayMovesLeft(diceNum);
-                Boolean validMove = player.move(getMove(ui.getMoves(), player), board.getPlayerBoard(players), spacesUsed);
+                Boolean validMove = player.move(ui.getMoves(player), board.getPlayerBoard(players), spacesUsed);
                 // error checking
                 while (!validMove) {
                     ui.invalidInput();
-                    validMove = player.move(getMove(ui.getMoves(), player), board.getPlayerBoard(players), spacesUsed);
+                    validMove = player.move(ui.getMoves(player), board.getPlayerBoard(players), spacesUsed);
                 }
                 ui.drawWeapons(roomWeapons);
                 ui.repaint();

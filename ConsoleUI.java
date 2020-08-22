@@ -1,25 +1,17 @@
 // Controls all output and input of the game
 
-import jdk.nashorn.internal.scripts.JD;
-import sun.misc.JavaLangAccess;
-
 import java.awt.*;
 import java.awt.event.*;
+import java.security.Key;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.management.remote.rmi.RMIConnectionImpl;
 import javax.swing.*;
-import javax.xml.bind.Element;
 
-public class ConsoleUI extends JFrame implements MouseListener {
-    //private Map<String, String> weaponNames = new HashMap<>();
-    //private Map<String, String> roomNames = new HashMap<>();
-    //private Map<String, String> characterNames = new HashMap<>();
+public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
     private ArrayList<String> weaponNames = new ArrayList<>();
     private ArrayList<String> roomNames = new ArrayList<>();
     private ArrayList<String> characterNames = new ArrayList<>();
 
-    static Scanner input = new Scanner(System.in);
     AtomicBoolean mousePressed = new AtomicBoolean(false);
     Cell movedCell = null;
     CluedoGame game;
@@ -82,6 +74,7 @@ public class ConsoleUI extends JFrame implements MouseListener {
 
     private void initUI() {
         addMouseListener(this);
+        addKeyListener(this);
         setTitle("Cluedo Game");
         setSize(width, height);
         setLocationRelativeTo(null);
@@ -144,7 +137,7 @@ public class ConsoleUI extends JFrame implements MouseListener {
         gbc = getGBC(gbc, 1, 0, 1, 1, 0.5, 5);
         mainPanel.add(playersPanel, gbc);
 
-        gbc = getGBC(gbc, 1, 2, 1, 1, 0.5, 0.5);
+        gbc = getGBC(gbc, 1, 2, 1, 1, 0.5, 0.25);
         mainPanel.add(dicePanel, gbc);
 
         gbc = getGBC(gbc, 0, 3, 2, 1, 0.5, 1);
@@ -289,16 +282,49 @@ public class ConsoleUI extends JFrame implements MouseListener {
      *
      * @return "U", "D", "L", "R" indicating up, down, left, or right
      */
-    public Cell getMoves() {
+    public String getMoves(Player player) {
+        movedCell = null;
         mousePressed.set(false);
         System.out.println("Do you want to move UDLR? ");
 
         while (!mousePressed.get()) {
             //System.out.println(mousePressed);
         }
-        return movedCell;
+        if(movedCell!=null){
+            if(movedCell.getSymbol()=='U'){
+                return "U";
+            }else if(movedCell.getSymbol()=='D'){
+                return "D";
+            }else if(movedCell.getSymbol()=='L'){
+                return "L";
+            }else if(movedCell.getSymbol()=='R'){
+                return "R";
+            }
+        }
+        return getDirection(movedCell, player);
     }
 
+    public String getDirection(Cell c, Player p){
+        if(c == null){
+            return "";
+        }
+        int playerX = p.getxPos();
+        int playerY = p.getyPos();
+        int cellX = c.getxCoord();
+        int cellY = c.getyCoord();
+        int colDiff = playerX - cellX;
+        int rowDiff = playerY - cellY;
+        if(colDiff == 1 && rowDiff == 0){
+            return "L";
+        }else if(colDiff == -1 && rowDiff == 0){
+            return "R";
+        }else if(colDiff == 0 && rowDiff == 1){
+            return "U";
+        }else if(colDiff == 0 && rowDiff == -1){
+            return "D";
+        }
+        return "";
+    }
     public void displayPlayersTurn(char player) {
         System.out.println("\nIt is player " + player + "'s turn");
     }
@@ -525,7 +551,9 @@ public class ConsoleUI extends JFrame implements MouseListener {
                 bottomPanel.add(label);
             }
         }
-        bottomPanel.setVisible(true);
+        bottomPanel.validate();
+        bottomPanel.repaint();
+
     }
 
 
@@ -789,9 +817,8 @@ public class ConsoleUI extends JFrame implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         Cell c = board.getCellFromPixel(e.getX(), e.getY());
-        movedCell = c;
+        movedCell = new Cell(c.getxCoord(), c.getyCoord(), '-');
         mousePressed.set(true);
-
     }
 
     @Override
@@ -806,5 +833,27 @@ public class ConsoleUI extends JFrame implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            movedCell = new Cell(1, 1, 'U');
+        }else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            movedCell = new Cell(1, 1, 'D');
+        }else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            movedCell = new Cell(1, 1, 'R');
+        }else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            movedCell = new Cell(1, 1, 'L');
+        }
+        mousePressed.set(true);
     }
 }

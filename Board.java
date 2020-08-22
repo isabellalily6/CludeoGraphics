@@ -104,7 +104,7 @@ public class Board  extends JPanel implements MouseListener {
      */
     public Cell getCellFromPixel(int x, int y) {
     	//return null if out of bounds
-    	if(x < cellSize || x > width - cellSize || y < cellSize || y > (height + cellsHigh*3)) {
+    	if(x < cellSize || x > width - cellSize || y < cellSize || y > (height + cellSize*3)) {
     		return null;
     	}
 
