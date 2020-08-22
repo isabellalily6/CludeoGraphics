@@ -43,6 +43,7 @@ public class CluedoGame {
             for(Player p: players){
                 if(p.getCharacterCard().getName().equals(list.get(i+1).toString())){
                     currentPlayers.add(p);
+                    p.setPlayerNum(i/2+1);
                     p.setName(list.get(i).toString());
                 }
             }
@@ -109,6 +110,7 @@ public class CluedoGame {
             if (diceNum > 0) {
                 ui.displayMovesLeft(diceNum);
                 Boolean validMove = player.move(ui.getMoves(player), board.getPlayerBoard(players), spacesUsed);
+                board.updateBoard(players);
                 // error checking
                 while (!validMove) {
                     ui.invalidInput();
@@ -407,13 +409,13 @@ public class CluedoGame {
 
         boolean shownCard = false;
         int num = 0;
-        if ((player.getSymbol() - '0') == numPlayers) { // if last player go back to the beginning
+        if ((player.getPlayerNum()) == numPlayers) { // if last player go back to the beginning
             num = 0;
         } else {
-            num = player.getSymbol() - '0';
+            num = player.getPlayerNum();
         }
         // loop clockwise around other players and check their hands for any cards in suggestion
-        for (int i = num; i != (int) (player.getSymbol() - '0') - 1; i++) {
+        for (int i = num; i != (int) (player.getPlayerNum() - 1); i++) {
             if (i == numPlayers) {
                 i = 0;
             }

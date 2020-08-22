@@ -13,6 +13,7 @@ public class Player {
     private static Set<java.lang.Character> playerNums = new HashSet<java.lang.Character>();
     private String name;
     private Set<Cell> placesMoved = new HashSet<>();
+    private int playerNum;
 
     public Player(Character name, int startX, int startY, char symbol) {
         characterCard = name;
@@ -65,6 +66,18 @@ public class Player {
             }
         }
         return matches;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
+    }
+
+    public int getPlayerNum() {
+        return playerNum;
+    }
+
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
     }
 
     /**

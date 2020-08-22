@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board  extends JPanel implements MouseListener {
+public class Board  extends JPanel implements MouseMotionListener {
     private int WIDTH = 24;
     private int HEIGHT = 25;
     private Cell[][] board = new Cell[WIDTH][HEIGHT]; // storing each cell in position
+    private Cell[][] playerBoard = new Cell[WIDTH][HEIGHT]; // storing each cell in position
 
     private ArrayList<Player> players;
     Graphics2D g2 = null;
@@ -24,6 +26,7 @@ public class Board  extends JPanel implements MouseListener {
         makeBoard();
         this.players = players;
         setBackground(Color.pink);
+        addMouseMotionListener(this);
     }
 
     /**
@@ -118,7 +121,10 @@ public class Board  extends JPanel implements MouseListener {
     	//return the cell
     	return board[x / cellSize][row-3];
     }
-    
+
+    public void updateBoard(ArrayList<Player> players){
+        playerBoard = getPlayerBoard(players);
+    }
     /**
      * Adds all players the player on the board in their current position
      *
@@ -218,27 +224,26 @@ public class Board  extends JPanel implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println("released");
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        System.out.println("released");
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        System.out.println("released");
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseDragged(MouseEvent e) {
 
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseMoved(MouseEvent e) {
+        JToolTip tip = new JToolTip();
+        tip.setTipText("hi");
+        tip.setVisible(true);
+        if(getCellFromPixel(e.getX(), e.getY())!=null) {
 
+            if (getCellFromPixel(e.getX(), e.getY()) != null &&
+                    getCellFromPixel(e.getX(), e.getY()).getSymbol() == '1' || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '2'
+                    || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '3' || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '4'
+                    || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '5' || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '6') {
+               /* JToolTip tip = new JToolTip();
+                tip.setTipText("hi");
+                System.out.println("hi");
+                tip.setVisible(true);*/
+            }
+        }
     }
 }

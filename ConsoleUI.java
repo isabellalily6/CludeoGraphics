@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 
-public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
+public class ConsoleUI extends JFrame implements MouseListener, KeyListener, MouseMotionListener {
     private ArrayList<String> weaponNames = new ArrayList<>();
     private ArrayList<String> roomNames = new ArrayList<>();
     private ArrayList<String> characterNames = new ArrayList<>();
@@ -81,6 +81,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        setResizable(true);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
@@ -173,7 +174,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
                 d.dispose();
             }
         });
-        setSizeandVisible(d, 100, 300);
+        setSizeandVisible(d, 250, 150);
 
         return Integer.parseInt(num.getSelectedItem().toString());
 
@@ -350,7 +351,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
         System.out.println("Do you want to make a suggestion (S), an Accusation (A) or neither (N)? ");
         System.out.println("Type S for suggestion, A for accusation and N for neither");
         JDialog makeSuggestion = makeDialog("Do you want to make a:");
-        makeSuggestion.setLayout(new GridLayout(5, 1));
+        makeSuggestion.setLayout(new GridLayout(5, 0));
         // three radio buttons
         JRadioButton suggest = new JRadioButton("Suggestion", true);
         JRadioButton accuse = new JRadioButton("Accusation");
@@ -374,7 +375,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
             }
         });
 
-        setSizeandVisible(makeSuggestion, 150, 200);
+        setSizeandVisible(makeSuggestion, 200, 300);
 
         if (suggest.isSelected()) {
             return "S";
@@ -399,24 +400,51 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
         JLabel label2 = new JLabel("Pick a Weapon:");
         JLabel label3 = new JLabel("Pick a Room");
         JDialog d = new JDialog(this, true);
-        if (suggest) {
-            d.setLayout(new GridLayout(15, 1));
-        } else {
-            d.setLayout(new GridLayout(25, 1));
+        GridBagConstraints gbc = new GridBagConstraints();
+        JPanel characters = new JPanel(new GridLayout(0, 1));
+        JPanel weapons = new JPanel(new GridLayout(0, 1));
+        d.setLayout(new GridBagLayout());
+
+        characters.add(label1);
+        ButtonGroup bg = new ButtonGroup();
+        for(String s: characterNames){
+            JRadioButton button = new JRadioButton(s, true);
+            button.setActionCommand(s);
+            bg.add(button);
+            characters.add(button);
         }
-        d.add(label1);
-        ButtonGroup bg = addButtonGroup(d, characterNames);
-        d.add(label2);
-        ButtonGroup bg2 = addButtonGroup(d, weaponNames);
+        gbc = getGBC(gbc, 0, 0, 1, 1, 1, 2);
+        d.add(characters, gbc);
+        weapons.add(label2);
+        ButtonGroup bg2 = new ButtonGroup();
+        for(String s: weaponNames){
+            JRadioButton button = new JRadioButton(s, true);
+            button.setActionCommand(s);
+            bg2.add(button);
+            weapons.add(button);
+        }
+        gbc = getGBC(gbc, 1, 0, 1, 1, 1, 2);
+        d.add(weapons, gbc);
         ButtonGroup bg3 = new ButtonGroup();
 
         if (!suggest) {
-            d.add(label3);
-            bg3 = addButtonGroup(d, roomNames);
+            JPanel rooms = new JPanel(new GridLayout(0, 1));
+            rooms.add(label3);
+            bg3 = new ButtonGroup();
+            for(String s: roomNames){
+                JRadioButton button = new JRadioButton(s, true);
+                button.setActionCommand(s);
+                bg3.add(button);
+                rooms.add(button);
+            }
+            gbc = getGBC(gbc, 2, 0, 1, 1, 1, 2);
+            d.add(rooms, gbc);
         }
 
         JButton next = new JButton("Next");
-        d.add(next);
+        gbc = getGBC(gbc, 1, 1, 1, 1, 1, 1);
+        next.setSize(50, 25);
+        d.add(next, gbc);
 
         next.addActionListener(new ActionListener() {
             @Override
@@ -425,7 +453,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
             }
         });
 
-        setSizeandVisible(d, 100, 600);
+        setSizeandVisible(d, 600, 600);
 
         String character = bg.getSelection().getActionCommand();
         String weapon = bg2.getSelection().getActionCommand();
@@ -520,7 +548,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
             }
         });
 
-        setSizeandVisible(d, 100, 100);
+        setSizeandVisible(d, 300, 100);
     }
 
     public void correctAccusation() {
@@ -537,7 +565,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
             }
         });
 
-        setSizeandVisible(d, 100, 100);
+        setSizeandVisible(d, 300, 100);
     }
 
 
@@ -653,7 +681,10 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
             }
         });
 
-        setSizeandVisible(d, 100, 100);
+        setSizeandVisible(d, 300, 200);
+        if(answer.isEmpty()){
+            answer.add("Y");
+        }
 
         if (answer.get(0).equalsIgnoreCase("Y")) {
             return true;
@@ -672,7 +703,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
         JDialog d = makeDialog("You are in a room!!!");
         d.setLayout(new GridLayout(4, 1));
 
-        JLabel question = new JLabel("Do you want to use the rest of your moves? Y or N");
+        JLabel question = new JLabel("Do you want to use the rest of your moves?");
         JButton yes = new JButton("Yes");
         JButton no = new JButton("No");
 
@@ -697,7 +728,10 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
             }
         });
 
-        setSizeandVisible(d, 100, 100);
+        setSizeandVisible(d, 300, 200);
+        if(answer.isEmpty()){
+            answer.add("Y");
+        }
 
         if (answer.get(0).equalsIgnoreCase("Y")) {
             return true;
@@ -708,10 +742,24 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
 
     public void displayCard(Player withCard, Card toShow) {
         JDialog d = makeDialog("Player " + withCard.getSymbol() + " showed you: ");
-        d.setLayout(new GridLayout(2, 1));
+        d.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
         JLabel icon = new JLabel();
+        JButton button = new JButton("OK");
         icon.setIcon(getCard(toShow.getName()));
-        d.add(icon);
+        gbc = getGBC(gbc, 0, 1, 1, 1, 1,  1);
+        d.add(icon, gbc);
+        gbc = getGBC(gbc, 0, 2, 1, 1, 1, 1);
+        d.add(button, gbc);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d.dispose();
+            }
+        });
+
         setSizeandVisible(d, 200, 500);
     }
 
@@ -723,7 +771,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
      */
     public void chooseCard(Player choosing, ArrayList<Card> chooseFrom) {
         JDialog d = makeDialog("Player " + choosing.getSymbol() + ", choose a card to show:");
-
+        d.setLayout(new GridLayout(0, 1));
         ButtonGroup bg = new ButtonGroup();
 
         for (Card c : chooseFrom) {
@@ -734,15 +782,16 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
         }
 
         JButton next = new JButton("next");
+        d.add(next);
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                displayCard(choosing, new Card(bg.getSelection().getActionCommand()));
                 d.dispose();
             }
         });
+        setSizeandVisible(d, 300, 150);
+        displayCard(choosing, new Card(bg.getSelection().getActionCommand()));
 
-        setSizeandVisible(d, 100, 100);
     }
 
     public void drawWeapons(Map<String, String> map) {
@@ -827,7 +876,6 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
     }
 
     @Override
@@ -855,5 +903,15 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener {
             movedCell = new Cell(1, 1, 'L');
         }
         mousePressed.set(true);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        System.out.println(e.getY() + "entered" + e.getX());
     }
 }
