@@ -27,6 +27,7 @@ public class Board  extends JPanel {
 
     public Board(ArrayList<Player> players) {
         makeBoard();
+        makeBoardWeapons();
         this.players = players;
         setBackground(Color.pink);
         //addMouseMotionListener(this);
