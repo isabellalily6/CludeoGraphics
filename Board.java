@@ -15,6 +15,7 @@ public class Board  extends JPanel {
     private Cell[][] board = new Cell[WIDTH][HEIGHT]; // storing each cell in position
     private Cell[][] playerBoard = new Cell[WIDTH][HEIGHT]; // storing each cell in position
     private AtomicBoolean hover = new AtomicBoolean(false);
+    private ArrayList<Cell> boardWeapons = new ArrayList<>();
 
     private ArrayList<Player> players;
     Graphics2D g2 = null;
@@ -102,7 +103,30 @@ public class Board  extends JPanel {
             g2.setStroke(new BasicStroke(2));
             g2.setColor(Color.black);
             g2.drawOval(cellSize*(xPos+1)+cellSize/8, cellSize*(yPos+1)+cellSize/8, cellSize*3/4, cellSize*3/4);
+            
+            for(Cell cell : boardWeapons){
+                g2.setColor(Color.black);
+                g2.drawString(String.valueOf(cell.getSymbol()), cellSize*(cell.getxCoord()+1)+cellSize/8, cellSize*(cell.getyCoord()+3/2)+cellSize/8);
+            }
         }
+    }
+    /**
+     * Creating Cells in each room for a weapon to go into
+     */
+    public void makeBoardWeapons() {
+        boardWeapons.add(new Cell(1, 5, 'R', 'K'));
+        boardWeapons.add(new Cell(10, 3, '+', 'B'));
+        boardWeapons.add(new Cell(1, 14, 's', 'D'));
+        boardWeapons.add(new Cell(5, 23, '|', 'O'));
+        boardWeapons.add(new Cell(13, 23, '&', 'H'));
+        boardWeapons.add(new Cell(22, 23, 'L', 'S'));
+        boardWeapons.add(new Cell(22, 16, ' ', 'L'));
+        boardWeapons.add(new Cell(22, 10, ' ', 'I'));
+        boardWeapons.add(new Cell(22, 1, ' ', 'C'));
+    }
+
+    public ArrayList<Cell> getBoardWeapons(){
+        return boardWeapons;
     }
     
     /**
