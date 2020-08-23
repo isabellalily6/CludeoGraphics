@@ -7,12 +7,14 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Board  extends JPanel implements MouseMotionListener {
+public class Board  extends JPanel {
     private int WIDTH = 24;
     private int HEIGHT = 25;
     private Cell[][] board = new Cell[WIDTH][HEIGHT]; // storing each cell in position
     private Cell[][] playerBoard = new Cell[WIDTH][HEIGHT]; // storing each cell in position
+    private AtomicBoolean hover = new AtomicBoolean(false);
 
     private ArrayList<Player> players;
     Graphics2D g2 = null;
@@ -26,7 +28,7 @@ public class Board  extends JPanel implements MouseMotionListener {
         makeBoard();
         this.players = players;
         setBackground(Color.pink);
-        addMouseMotionListener(this);
+        //addMouseMotionListener(this);
     }
 
     /**
@@ -45,6 +47,10 @@ public class Board  extends JPanel implements MouseMotionListener {
             }
         }
         System.out.println();
+    }
+
+    public void setHover(Boolean bool) {
+        hover.set(bool);
     }
 
     public void paint(Graphics g) {
@@ -107,7 +113,7 @@ public class Board  extends JPanel implements MouseMotionListener {
      */
     public Cell getCellFromPixel(int x, int y) {
     	//return null if out of bounds
-    	if(x < cellSize || x > width - cellSize || y < cellSize || y > (height + cellSize*3)) {
+    	if(x < cellSize || x > width - cellSize || y < cellSize || y > (height - cellSize)) {
     		return null;
     	}
 
@@ -119,8 +125,14 @@ public class Board  extends JPanel implements MouseMotionListener {
         int row = y/cellSize;
 
     	//return the cell
-    	return board[x / cellSize][row-3];
+        try {
+            return board[x / cellSize][row];
+        }catch(ArrayIndexOutOfBoundsException e){
+            return null;
+        }
     }
+
+
 
     public void updateBoard(ArrayList<Player> players){
         playerBoard = getPlayerBoard(players);
@@ -223,27 +235,5 @@ public class Board  extends JPanel implements MouseMotionListener {
 
     }
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
 
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        JToolTip tip = new JToolTip();
-        tip.setTipText("hi");
-        tip.setVisible(true);
-        if(getCellFromPixel(e.getX(), e.getY())!=null) {
-
-            if (getCellFromPixel(e.getX(), e.getY()) != null &&
-                    getCellFromPixel(e.getX(), e.getY()).getSymbol() == '1' || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '2'
-                    || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '3' || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '4'
-                    || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '5' || getCellFromPixel(e.getX(), e.getY()).getSymbol() == '6') {
-               /* JToolTip tip = new JToolTip();
-                tip.setTipText("hi");
-                System.out.println("hi");
-                tip.setVisible(true);*/
-            }
-        }
-    }
 }

@@ -1,13 +1,14 @@
 // This class oversees the entire game. It contains the main methods in the game like run() and playersTurn().
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CluedoGame {
     // initialise the variables
     private int numPlayers;
     private Set<Card> cards = new HashSet<>();
     private Suggestion murder; //solution
-    private java.util.ArrayList<Player> players = new ArrayList<>();
+    static public java.util.ArrayList<Player> players = new ArrayList<>();
     private java.util.ArrayList<Player> currentPlayers = new ArrayList<>();
     private Map<String, String> roomWeapons = new HashMap<>();
     private Board board;
@@ -22,6 +23,7 @@ public class CluedoGame {
         board = new Board(players);
         this.ui = new ConsoleUI(board, players, this);
     }
+
 
     /**
      * Uses methods below to create everything needed to play the game (Cards, players etc)
@@ -98,6 +100,7 @@ public class CluedoGame {
         int diceNum = rollDice();
         ui.displayDiceRoll(diceNum);
         while (diceNum > 0) {     //continue until no more moves left
+            ui.updateInfo(player, diceNum);
             spacesUsed.add(board.getCell(player.getxPos(), player.getyPos()));
             if (roomNames.containsKey(board.getCell(player.getxPos(), player.getyPos()).getSymbol()) && !asked) {
                 // player is in a room
@@ -121,6 +124,7 @@ public class CluedoGame {
                 diceNum -= 1;
             }
         }
+        ui.updateInfo(player, diceNum);
         // if they are inside when they have no more moves they can make a suggestion
         if (roomNames.containsKey(board.getCell(player.getxPos(), player.getyPos()).getSymbol())) {
             String userInput = ui.checkSuggestion();

@@ -18,6 +18,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
     private Board board;
     private ArrayList<Player> players;
     JPanel playersPanel = new JPanel();
+    JPanel infoPanel = new JPanel();
     JPanel bottomPanel = new JPanel();
     JPanel mainPanel = new JPanel(new BorderLayout());
     JLabel firstDice = new JLabel();
@@ -73,7 +74,8 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
     }
 
     private void initUI() {
-        addMouseListener(this);
+        mainPanel.addMouseMotionListener(this);
+        mainPanel.addMouseListener(this);
         addKeyListener(this);
         setTitle("Cluedo Game");
         setSize(width, height);
@@ -116,7 +118,9 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
         JPanel dicePanel = new JPanel(new GridBagLayout());
 
+        infoPanel.setLayout(new GridLayout(2, 1));
         playersPanel.setBackground(Color.decode("#0C9036"));
+        infoPanel.setBackground(Color.decode("#0C9036"));
         dicePanel.setBackground(Color.decode("#1B562E"));
         mainPanel.setBackground(Color.cyan);
         bottomPanel.setPreferredSize(new Dimension(100, 100));
@@ -135,7 +139,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(new Board(players), gbc);
 
-        gbc = getGBC(gbc, 1, 0, 1, 1, 0.5, 5);
+        gbc = getGBC(gbc, 1, 0, 1, 1, 0.5, 3);
         mainPanel.add(playersPanel, gbc);
 
         gbc = getGBC(gbc, 1, 2, 1, 1, 0.5, 0.25);
@@ -143,6 +147,9 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
         gbc = getGBC(gbc, 0, 3, 2, 1, 0.5, 1);
         mainPanel.add(bottomPanel, gbc);
+
+        gbc = getGBC(gbc, 1, 1, 1, 1, 0.5, 1);
+        mainPanel.add(infoPanel, gbc);
 
         add(mainPanel);
         setVisible(false);
@@ -181,6 +188,16 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
     }
 
 
+    public void updateInfo(Player p, int num){
+        infoPanel.removeAll();
+        JLabel label1 = new JLabel("It is " + p.getName() + "'s turn: Player " + p.getPlayerNum());
+        JLabel label2 = new JLabel("Number of moves left: " + num);
+        infoPanel.add(label1);
+        infoPanel.add(label2);
+        infoPanel.validate();
+        infoPanel.repaint();
+
+    }
     public ArrayList<String> setCharacters(int numPlayer) {
         ArrayList names = new ArrayList();
         JLabel label = new JLabel();
@@ -856,6 +873,9 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         gbc.weighty = yweight;
         return gbc;
     }
+    public void toolTip(String player){
+        mainPanel.setToolTipText(player);
+    }
 
 
     @Override
@@ -866,8 +886,10 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
     @Override
     public void mousePressed(MouseEvent e) {
         Cell c = board.getCellFromPixel(e.getX(), e.getY());
-        movedCell = new Cell(c.getxCoord(), c.getyCoord(), '-');
-        mousePressed.set(true);
+        if(c!=null) {
+            movedCell = new Cell(c.getxCoord(), c.getyCoord(), '-');
+            mousePressed.set(true);
+        }
     }
 
     @Override
@@ -907,11 +929,27 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        System.out.println(e.getY() + "entered" + e.getX());
+        Boolean onPlayer = false;
+        String player = null;
+        Cell cell = board.getCellFromPixel(e.getX(), e.getY());
+        if(cell!=null) {
+            for(Player p: CluedoGame.players){
+                //System.out.println("test");
+                if(p.getxPos()==cell.getxCoord() && p.getyPos()==cell.getyCoord()){
+                    player = p.getCharacterCard().getName();
+                    board.setHover(true);
+                    onPlayer = true;
+                }
+            }
+        }
+        if(!onPlayer){
+            board.setHover(false);
+        }
+        //System.out.println(player);
+        toolTip(player);
     }
 }
