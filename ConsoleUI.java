@@ -73,6 +73,9 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         initUI();
     }
 
+    /**
+     *  Opens all panels
+     */
     private void initUI() {
         mainPanel.addMouseMotionListener(this);
         mainPanel.addMouseListener(this);
@@ -187,7 +190,12 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
     }
 
-
+    /**
+     *  Updates information each player's turn or movement
+     *
+     * @param p
+     * @param num
+     */
     public void updateInfo(Player p, int num){
         infoPanel.removeAll();
         JLabel label1 = new JLabel("It is " + p.getName() + "'s turn: Player " + p.getPlayerNum());
@@ -198,11 +206,20 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         infoPanel.repaint();
 
     }
+    
+    /**
+     * One of the setup panels. This panel will pop up secend to ask for the player's
+     * name and their character of choice.
+     
+     * @param numPlayer
+     * @return
+     */
     public ArrayList<String> setCharacters(int numPlayer) {
         ArrayList names = new ArrayList();
         JLabel label = new JLabel();
         JDialog d = new JDialog(this, true);
         d.setLayout(new GridLayout(10, 1));
+        // Group of character radio buttons
         JTextField name = new JTextField();
         JRadioButton button1 = new JRadioButton("Miss Scarlett");
         JRadioButton button2 = new JRadioButton("Colonel Mustard");
@@ -219,7 +236,8 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         bg.add(button6);
 
         JButton next = new JButton("Next");
-
+        
+        // If button is clicked a new panel will appear until or the game will begin
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -237,6 +255,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
             d.add(button4);
             d.add(button5);
             d.add(button6);
+            // Enables a character button if another player is already chosen
             if (button1.isEnabled()) {
                 button1.setSelected(true);
             } else if (button2.isEnabled()) {
@@ -256,7 +275,6 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
             name.setText("");
             if (button1.isSelected()) {
                 names.add(button1.getText());
-                System.out.println("ye");
                 button1.setEnabled(false);
             } else if (button2.isSelected()) {
                 names.add(button2.getText());
@@ -279,7 +297,11 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         return names;
     }
 
-
+    /**
+     * Player information that will be displayed on the right side panel
+     * 
+     * @param players
+     */
     public void displayPlayers(ArrayList<Player> players) {
         playersPanel.setLayout(new GridLayout(players.size() + 6, 1));
         for (int i = 0; i < players.size(); i++) {
@@ -322,6 +344,14 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         return getDirection(movedCell, player);
     }
 
+    /**
+     * Will get the direction of where the player has moved using.
+     * Returns a string of the direction of where the player has moved
+     *
+     * @param c
+     * @param p
+     * @return "L", "R", "U", "D" indicates left, right, up, down
+     */
     public String getDirection(Cell c, Player p){
         if(c == null){
             return "";
@@ -384,7 +414,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         makeSuggestion.add(none);
         makeSuggestion.add(next);
 
-
+        // if next is clicked the panel will close and move to the next panel
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -412,10 +442,10 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
      */
     public ArrayList<String> getMurder(Boolean suggest) {
         ArrayList<String> murder = new ArrayList<>();
-
+        // Three groups of buttons to chose from
         JLabel label1 = new JLabel("Pick a Character:");
         JLabel label2 = new JLabel("Pick a Weapon:");
-        JLabel label3 = new JLabel("Pick a Room");
+        JLabel label3 = new JLabel("Pick a Room:");
         JDialog d = new JDialog(this, true);
         GridBagConstraints gbc = new GridBagConstraints();
         JPanel characters = new JPanel(new GridLayout(0, 1));
@@ -424,6 +454,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
         characters.add(label1);
         ButtonGroup bg = new ButtonGroup();
+        // iterates through all characters and creates a button
         for(String s: characterNames){
             JRadioButton button = new JRadioButton(s, true);
             button.setActionCommand(s);
@@ -434,6 +465,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         d.add(characters, gbc);
         weapons.add(label2);
         ButtonGroup bg2 = new ButtonGroup();
+        // iterates through all weapons and creates a button
         for(String s: weaponNames){
             JRadioButton button = new JRadioButton(s, true);
             button.setActionCommand(s);
@@ -444,10 +476,12 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         d.add(weapons, gbc);
         ButtonGroup bg3 = new ButtonGroup();
 
+        // Will only create room buttons if player is making an accusation
         if (!suggest) {
             JPanel rooms = new JPanel(new GridLayout(0, 1));
             rooms.add(label3);
             bg3 = new ButtonGroup();
+            // iterates through all rooms and creates a button
             for(String s: roomNames){
                 JRadioButton button = new JRadioButton(s, true);
                 button.setActionCommand(s);
@@ -463,6 +497,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         next.setSize(50, 25);
         d.add(next, gbc);
 
+        // dispose of the panel when the next button is clicked
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -476,6 +511,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         String weapon = bg2.getSelection().getActionCommand();
         murder.add(character);
         murder.add(weapon);
+        // room will be added to ArrayList if making an accusation so no "null" variable is added
         if (!suggest) {
             String room = bg3.getSelection().getActionCommand();
             murder.add(room);
@@ -551,6 +587,9 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         return sug;
     }
 
+    /**
+     *  A panel to indicate that the player has made a wrong accusation
+     */
     public void wrongAccusation() {
         JDialog d = makeDialog("Your accusation was wrong. You have lost!");
         d.setLayout(new GridLayout(2, 1));
@@ -568,6 +607,9 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         setSizeandVisible(d, 300, 100);
     }
 
+    /**
+     *  A panel to indicate that the player has made a correct accusation
+     */
     public void correctAccusation() {
         JDialog d = makeDialog("Your accusation was right. You have WON!");
         d.setLayout(new GridLayout(2, 1));
@@ -585,9 +627,14 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         setSizeandVisible(d, 300, 100);
     }
 
-
+    /**
+     * Print the pictures that represent the current player's hand on the bottom panel
+     * 
+     * @param hand
+     */
     public void showHand(ArrayList<Card> hand) {
-        bottomPanel.removeAll();
+        bottomPanel.removeAll(); // clear bottom panel of all pictures 
+        // Prints current players hand
         for (Card c : hand) {
             ImageIcon icon = getCard(c.getName());
             if (icon != null) {
@@ -601,7 +648,12 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
     }
 
-
+    /**
+     * Gets the image that represents the card
+     * 
+     * @param name
+     * @return
+     */
     public ImageIcon getCard(String name) {
         switch (name) {
             case "Candlestick":
@@ -650,6 +702,12 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         return null;
     }
 
+    /**
+     * Gets the image that represents a side of the dice
+     *
+     * @param name
+     * @return
+     */
     public ImageIcon getDice(int num) {
         switch (num) {
             case 1:
@@ -683,6 +741,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         d.add(yes);
         d.add(no);
 
+        // will dispose of the panel if any button is clicked
         yes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -728,6 +787,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         d.add(yes);
         d.add(no);
 
+        // will dispose of the panel if any button is clicked
         yes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -757,6 +817,13 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         }
     }
 
+    /**
+     * Will display the card made in a suggestion from the current player
+     * that another player has in their hand
+     * 
+     * @param withCard
+     * @param toShow
+     */
     public void displayCard(Player withCard, Card toShow) {
         JDialog d = makeDialog("Player " + withCard.getSymbol() + " showed you: ");
         d.setLayout(new GridBagLayout());
@@ -825,6 +892,9 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         }
     }
 
+    /**
+     * Create a panel if no other player has a card made in a suggestion
+     */
     public void noCardShown() {
         JDialog d = makeDialog("No one has those cards");
         JButton ok = new JButton("OK");
