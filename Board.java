@@ -107,7 +107,7 @@ public class Board  extends JPanel {
             
             for(Cell cell : boardWeapons){
                 g2.setColor(Color.black);
-                g2.drawString(String.valueOf(cell.getSymbol()), cellSize*(cell.getxCoord()+1)+cellSize/8, cellSize*(cell.getyCoord()+3/2)+cellSize/8);
+                g2.drawString(String.valueOf(cell.getSymbol()), cellSize*(cell.getxCoord()+1)+cellSize/8, cellSize*(cell.getyCoord()+2)+cellSize/8);
             }
         }
     }
