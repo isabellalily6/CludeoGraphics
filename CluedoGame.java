@@ -13,6 +13,8 @@ public class CluedoGame {
     private Map<String, String> roomWeapons = new HashMap<>();
     private Board board;
     private Map<java.lang.Character, String> roomNames = new HashMap<>();
+    public Map<java.lang.Character, String> weaponNames = new HashMap<>();
+    private Map<java.lang.Character, Cell> leftRoomLocations = new HashMap<>();
     private ConsoleUI ui;
     private Boolean gameOver = false;
     private int diceNum = 0;
@@ -56,6 +58,8 @@ public class CluedoGame {
         // set up the game
         createCards();
         createRooms();
+        createWeapons();
+        makeLeftRooms();
         addWeaponsToRooms();
         decideMurder();
         dealCards();
@@ -68,6 +72,7 @@ public class CluedoGame {
         while (!gameOver) {  // loops through stages 2-4 from section 2.6 'User Interface' from handout
             for (Player player : currentPlayers) {
                 if (!player.getHasLost()) {
+                    ui.nextPlayer(player);
                     ui.displayPlayersTurn(player.getSymbol());
                     ui.showHand(player.getHand());
                     playersTurn(player);
@@ -174,6 +179,11 @@ public class CluedoGame {
         }
     }
 
+    public void makeLeftRooms(){
+        for(java.lang.Character s : roomNames.keySet()){
+            // add the co-ordes of left corner of room
+        }
+    }
     /**
      * Create the character, weapon and room cards
      */
@@ -205,6 +215,19 @@ public class CluedoGame {
         cards.add(new Room("Hall"));
         cards.add(new Room("Lounge"));
         cards.add(new Room("Dining Room"));
+    }
+
+    /**
+     * Create weapons for displaying on the board, the key will be used to display
+     */
+    public void createWeapons() {
+        weaponNames.put('R', "Revolver");
+        weaponNames.put('S', "Spanner");
+        weaponNames.put('C', "Candlestick");
+        weaponNames.put('D', "Dagger");
+        weaponNames.put('L', "Lead Pipe");
+        weaponNames.put('&', "Rope");
+
     }
 
     /**
@@ -352,20 +375,50 @@ public class CluedoGame {
      * @param weapon
      */
     public void moveWeapon(String room, String weapon) {
-        String oldRoom = null; // name of room weapon needed is in currently
-        for (Map.Entry<String, String> entry : roomWeapons.entrySet()) {
+        //String oldRoom = null; // name of room weapon needed is in currently
+        java.lang.Character oldCharRoom = ' '; // name of room weapon needed is in currently
+        java.lang.Character newRoom = ' ';
+        for (Map.Entry<java.lang.Character, String> entry : weaponNames.entrySet()) {
             if (entry.getValue().equals(weapon)) {
-                oldRoom = entry.getKey();
+                oldCharRoom = entry.getKey();
             }
         }
-        if (roomWeapons.containsKey(room)) {
-            // swaps room
-            roomWeapons.put(oldRoom, roomWeapons.get(room));
-        } else {
-            //if no weapon is in room
-            roomWeapons.remove(oldRoom);
+        for(Cell c: board.getBoardWeapons()){
+            if(c.getSymbol()==oldCharRoom){
+                oldCharRoom=c.getRoomSymbol();
+            }
         }
-        roomWeapons.put(room, weapon);
+        System.out.println(room);
+        //System.out.println(oldRoom);
+        for (Map.Entry<java.lang.Character, String> entry : roomNames.entrySet()) {
+            if (entry.getValue().equals(room)) {
+                newRoom = entry.getKey();
+            }
+        }
+        System.out.println(oldCharRoom);
+        System.out.println(newRoom);
+        Cell oldCell = null;
+        Cell newCell = null;
+        for(Cell c: board.getBoardWeapons()){
+            if(c.getRoomSymbol()==oldCharRoom){
+                oldCell = new Cell(c.getxCoord(), c.getyCoord(), c.getSymbol(), c.getRoomSymbol());
+            }
+            if(c.getRoomSymbol()==newRoom){
+                newCell = new Cell(c.getxCoord(), c.getyCoord(), c.getSymbol(), c.getRoomSymbol());
+            }
+        }
+        ArrayList<Cell> list = new ArrayList<>();
+        for(Cell c: Board.boardWeapons){
+            if(c.getxCoord()==oldCell.getxCoord()&&c.getyCoord()==oldCell.getyCoord()){
+                c.changeCell(newCell);
+            }
+            if(c.getxCoord()==newCell.getxCoord()&&c.getyCoord()==newCell.getyCoord()){
+                c.changeCell(oldCell);
+            }
+            list.add(c);
+        }
+        //board.updateWeapons(list);
+        ui.repaint();
     }
 
     /**

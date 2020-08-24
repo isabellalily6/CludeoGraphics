@@ -137,7 +137,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         gbc.anchor = GridBagConstraints.WEST;
         dicePanel.add(secondDice, gbc);
 
-        gbc = getGBC(gbc, 0, 0, 1, 3, 4, 4);
+        gbc = getGBC(gbc, 0, 0, 1, 3, 4, 5);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(new Board(players), gbc);
@@ -303,18 +303,28 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
      * @param players
      */
     public void displayPlayers(ArrayList<Player> players) {
-        playersPanel.setLayout(new GridLayout(players.size() + 6, 1));
+        playersPanel.setLayout(new GridLayout(players.size(), 1));
         for (int i = 0; i < players.size(); i++) {
             String text = "Player " + (i + 1) + ": " + players.get(i).getCharacterCard().getName() + ": " +
                     players.get(i).getName();
             playersPanel.add(new JLabel(text));
         }
-        playersPanel.add(new JLabel("Revolver = R"));
-        playersPanel.add(new JLabel("Dagger = -"));
-        playersPanel.add(new JLabel("Spanner = S"));
-        playersPanel.add(new JLabel("CandleStick = |"));
-        playersPanel.add(new JLabel("Rope = &"));
-        playersPanel.add(new JLabel("Lead Pipe = L"));
+    }
+    public void nextPlayer(Player p){
+        bottomPanel.removeAll();
+        JDialog d = makeDialog("It is player " + p.getPlayerNum() + "'s turn.");
+        d.setLayout(new GridLayout(2, 1));
+        JButton button = new JButton("OK");
+        d.add(button);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d.dispose();
+            }
+        });
+
+        setSizeandVisible(d, 100, 100);
+
     }
 
     /**
@@ -1011,6 +1021,13 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
                 //System.out.println("test");
                 if(p.getxPos()==cell.getxCoord() && p.getyPos()==cell.getyCoord()){
                     player = p.getCharacterCard().getName();
+                    board.setHover(true);
+                    onPlayer = true;
+                }
+            }
+            for(Cell c: Board.boardWeapons){
+                if(c.getxCoord()==cell.getxCoord()&&c.getyCoord()==cell.getyCoord()){
+                    player = game.weaponNames.get(c.getSymbol());
                     board.setHover(true);
                     onPlayer = true;
                 }

@@ -4,11 +4,19 @@ public class Cell {
     private int xCoord;
     private int yCoord;
     private char symbol; //Represents what the cell is (wall, room, etc.)
+    private char roomSymbol; //Represents what object this room is in
 
     public Cell(int x, int y, char symbol) {
         xCoord = x;
         yCoord = y;
         this.symbol = symbol;
+    }
+
+    public Cell(int x, int y, char symbol, char roomSymbol) {
+        xCoord = x;
+        yCoord = y;
+        this.symbol = symbol;
+        this.roomSymbol = roomSymbol;
     }
 
     /**
@@ -41,6 +49,10 @@ public class Cell {
         return false;
     }
 
+    public void changeCell(Cell c){
+        this.symbol = c.symbol;
+    }
+
     /**
      * Get the symbol of the cell
      *
@@ -49,4 +61,13 @@ public class Cell {
     public char getSymbol() {
         return symbol;
     }
+
+    public char getRoomSymbol(){
+        return roomSymbol;
+    }
+
+    public void changeWeapon(char symbol){
+        this.symbol = symbol;
+    }
+
 }

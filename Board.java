@@ -15,7 +15,7 @@ public class Board  extends JPanel {
     private Cell[][] board = new Cell[WIDTH][HEIGHT]; // storing each cell in position
     private Cell[][] playerBoard = new Cell[WIDTH][HEIGHT]; // storing each cell in position
     private AtomicBoolean hover = new AtomicBoolean(false);
-    private ArrayList<Cell> boardWeapons = new ArrayList<>();
+    static public ArrayList<Cell> boardWeapons = new ArrayList<>();
 
     private ArrayList<Player> players;
     Graphics2D g2 = null;
@@ -56,6 +56,8 @@ public class Board  extends JPanel {
     }
 
     public void paint(Graphics g) {
+
+
         g2 = (Graphics2D) g;
         for(int c = 0; c < cellsWide; c++) { //fill in cells
             for(int r = 0; r < cellsHigh; r++) {
@@ -83,7 +85,7 @@ public class Board  extends JPanel {
             Player player = players.get(i);
             int xPos = player.getxPos();
             int yPos = player.getyPos();
-            
+
             //set the colour of the player
             if(player.getCharacterCard().getName() == "Miss Scarlett") {
                 g2.setColor(new Color(255, 36, 0));
@@ -104,11 +106,25 @@ public class Board  extends JPanel {
             g2.setStroke(new BasicStroke(2));
             g2.setColor(Color.black);
             g2.drawOval(cellSize*(xPos+1)+cellSize/8, cellSize*(yPos+1)+cellSize/8, cellSize*3/4, cellSize*3/4);
-            
+
+
+            //cellSize*(cell.getxCoord()+1)+cellSize/7, cellSize*(cell.getyCoord()+2)+cellSize/9
+
             for(Cell cell : boardWeapons){
                 g2.setColor(Color.black);
-                g2.drawString(String.valueOf(cell.getSymbol()), cellSize*(cell.getxCoord()+1)+cellSize/8, cellSize*(cell.getyCoord()+2)+cellSize/8);
+                g2.drawString(String.valueOf(cell.getSymbol()), cellSize*(cell.getxCoord()+1)+cellSize/4, cellSize*(cell.getyCoord()+1)+cellSize*3/4);
             }
+
+            g2.setColor(Color.white);
+            g2.drawString("Kitchen", cellSize*3, cellSize*7/4);
+            g2.drawString("Ball Room", cellSize*46/4, cellSize*11/4);
+            g2.drawString("Conservatory", cellSize*20, cellSize*7/4);
+            g2.drawString("Dining Room", cellSize*2, cellSize*43/4);
+            g2.drawString("Billiard Room", cellSize*78/4, cellSize*39/4);
+            g2.drawString("Library", cellSize*83/4, cellSize*79/4);
+            g2.drawString("Lounge", cellSize*3, cellSize*103/4);
+            g2.drawString("Hall", cellSize*50/4, cellSize*103/4);
+            g2.drawString("Study", cellSize*82/4, cellSize*103/4);
         }
     }
     /**
@@ -116,9 +132,9 @@ public class Board  extends JPanel {
      */
     public void makeBoardWeapons() {
         boardWeapons.add(new Cell(1, 5, 'R', 'K'));
-        boardWeapons.add(new Cell(10, 3, '+', 'B'));
-        boardWeapons.add(new Cell(1, 14, 's', 'D'));
-        boardWeapons.add(new Cell(5, 23, '|', 'O'));
+        boardWeapons.add(new Cell(10, 3, 'D', 'B'));
+        boardWeapons.add(new Cell(1, 14, 'S', 'D'));
+        boardWeapons.add(new Cell(5, 23, 'C', 'O'));
         boardWeapons.add(new Cell(13, 23, '&', 'H'));
         boardWeapons.add(new Cell(22, 23, 'L', 'S'));
         boardWeapons.add(new Cell(22, 16, ' ', 'L'));
@@ -129,7 +145,7 @@ public class Board  extends JPanel {
     public ArrayList<Cell> getBoardWeapons(){
         return boardWeapons;
     }
-    
+
     /**
      * Gets a Cell based on x and y positions of a mouse click
      *
@@ -137,10 +153,10 @@ public class Board  extends JPanel {
      * @return null if out of bounds, otherwise the Cell being clicked on
      */
     public Cell getCellFromPixel(int x, int y) {
-    	//return null if out of bounds
-    	if(x < cellSize || x > width - cellSize || y < cellSize || y > (height - cellSize)) {
-    		return null;
-    	}
+        //return null if out of bounds
+        if(x < cellSize || x > width - cellSize || y < cellSize || y > (height - cellSize)) {
+            return null;
+        }
 
         //positions from the top left corner of the board, not the screen
         x -=  cellSize;
@@ -149,7 +165,7 @@ public class Board  extends JPanel {
         // calculates the row based on the off set
         int row = y/cellSize;
 
-    	//return the cell
+        //return the cell
         try {
             return board[x / cellSize][row];
         }catch(ArrayIndexOutOfBoundsException e){
