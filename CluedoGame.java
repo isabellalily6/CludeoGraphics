@@ -15,7 +15,7 @@ public class CluedoGame {
     private Map<java.lang.Character, String> roomNames = new HashMap<>();
     public Map<java.lang.Character, String> weaponNames = new HashMap<>();
     private Map<java.lang.Character, Cell> leftRoomLocations = new HashMap<>();
-    private ConsoleUI ui;
+    private GUI ui;
     private Boolean gameOver = false;
     private int diceNum = 0;
 
@@ -23,7 +23,7 @@ public class CluedoGame {
 
         makePlayers();
         board = new Board(players);
-        this.ui = new ConsoleUI(board, players, this);
+        this.ui = new GUI(board, players, this);
     }
 
 
