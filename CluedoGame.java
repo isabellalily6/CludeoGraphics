@@ -20,12 +20,10 @@ public class CluedoGame {
     private int diceNum = 0;
 
     public CluedoGame() {
-
         makePlayers();
         board = new Board(players);
         this.ui = new GUI(board, players, this);
     }
-
 
     /**
      * Uses methods below to create everything needed to play the game (Cards, players etc)
@@ -40,8 +38,7 @@ public class CluedoGame {
             numPlayers = ui.getNumPlayers();
         }
 
-       ArrayList list = ui.setCharacters(numPlayers);
-
+        ArrayList list = ui.setCharacters(numPlayers);
 
         for(int i = 0; i < numPlayers*2; i+=2){
             for(Player p: players){
@@ -52,7 +49,6 @@ public class CluedoGame {
                 }
             }
         }
-
         ui.displayPlayers(currentPlayers);
 
         // set up the game
@@ -88,10 +84,7 @@ public class CluedoGame {
         } else {
             gameOver(checkGameOver());
         }
-
-    }
-    
-
+    } 
 
     /**
      * Runs through a players turn including; dice roll, moves, suggestion etc
@@ -235,12 +228,13 @@ public class CluedoGame {
      */
     public void addWeaponsToRooms() {
         ArrayList<Weapon> weapons = new ArrayList<>();
+        // Find weapons
         for (Card card : cards) {
             if (card instanceof Weapon) {
                 weapons.add((Weapon) card);
             }
         }
-
+        // Put weapon into a empty room
         for (Card card : cards) {
             if (card instanceof Room) {
                 if (!weapons.isEmpty()) {
@@ -285,12 +279,14 @@ public class CluedoGame {
      * once per game
      */
     public void decideMurder() {
+        // shuffle cards to find random answer/murder
         ArrayList<Card> shuffledCards = new ArrayList<>();
         for (Card c : cards) {
             shuffledCards.add(c);
         }
         Collections.shuffle(shuffledCards);
 
+        // randomly get a weapon card
         int randInt = (int) (Math.random() * shuffledCards.size());
         while (!(shuffledCards.get(randInt) instanceof Weapon)) {
             randInt = (int) (Math.random() * shuffledCards.size());
@@ -298,6 +294,7 @@ public class CluedoGame {
         Weapon weapon = (Weapon) shuffledCards.get(randInt);
         cards.remove(weapon);
 
+        // randomly get a character card
         randInt = (int) (Math.random() * shuffledCards.size());
         while (!(shuffledCards.get(randInt) instanceof Character)) {
             randInt = (int) (Math.random() * shuffledCards.size());
@@ -305,6 +302,7 @@ public class CluedoGame {
         Character character = (Character) shuffledCards.get(randInt);
         cards.remove(character);
 
+        // randomly get a room card
         randInt = (int) (Math.random() * shuffledCards.size());
         while (!(shuffledCards.get(randInt) instanceof Room)) {
             randInt = (int) (Math.random() * shuffledCards.size());
@@ -319,28 +317,27 @@ public class CluedoGame {
         while (!(chosenCard instanceof Weapon)) {
             chosenCard = index.next();
         }
-        //Weapon weapon = (Weapon) chosenCard;
-        //cards.remove(weapon);
 
         index = cards.iterator();
         // searches for a room card and removes it from the stack of cards
         while (!(chosenCard instanceof Room)) {
             chosenCard = index.next();
         }
-        //Room room = (Room) chosenCard;
-        //cards.remove(room);
 
         index = cards.iterator();
         // searches for a character card and removes it from the stack of cards
         while (!(chosenCard instanceof Character)) {
             chosenCard = index.next();
         }
-        //Character character = (Character) chosenCard;
-        //cards.remove(character);
 
         murder = new Suggestion(room, character, weapon);
     }
 
+    /**
+     * Find two random integers between 1 and 6. Then add together to create number of moves
+     *
+     * @return
+     */
     public int rollDice() {
         int one = (int) ((Math.random() * 5 + 1));
         int two = (int) ((Math.random() * 5 + 1));
@@ -354,7 +351,6 @@ public class CluedoGame {
      */
     public void dealCards() {
         Iterator<Card> index = cards.iterator();
-
         while (index.hasNext()) {
             for (Player player : currentPlayers) {
                 if (index.hasNext()) {
@@ -417,7 +413,6 @@ public class CluedoGame {
             }
             list.add(c);
         }
-        //board.updateWeapons(list);
         ui.repaint();
     }
 
@@ -429,6 +424,7 @@ public class CluedoGame {
      */
     public void movePlayer(String room, String player) {
         char letter = ' ';
+        // Get room symbol
         for (Map.Entry<java.lang.Character, String> entry : roomNames.entrySet()) {
             if (entry.getValue().equals(room)) {
                 letter = entry.getKey();
@@ -463,9 +459,9 @@ public class CluedoGame {
         ui.repaint();
 
         guess.add(room);
-
         boolean shownCard = false;
         int num = 0;
+        
         if ((player.getPlayerNum()) == numPlayers) { // if last player go back to the beginning
             num = 0;
         } else {
@@ -542,6 +538,11 @@ public class CluedoGame {
         return null;
     }
     
+    /**
+     * Get current board
+     * 
+     * @return
+     */
     public Board getActiveBoard(){
         return board;
     }
@@ -555,5 +556,4 @@ public class CluedoGame {
         CluedoGame game = new CluedoGame();
         game.run();
     }
-
 }
