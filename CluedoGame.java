@@ -544,6 +544,39 @@ public class CluedoGame {
         return board;
     }
 
+        /**
+     * Move players based an array of moves and the dice numbers rolled to test movement
+     * 
+     * @param moves
+     * @param num
+     */
+    public void playerMove(ArrayList<String> moves, ArrayList<Integer> num) {
+        // initialise the variables
+        int count = 0; // counts the move
+        int dice = 0; // counts the dice
+        // while there are still moves
+        while(count != moves.size()){
+            for(Player player: currentPlayers){
+                // get the number of moves this player will move
+                int number = num.get(dice);
+                if(!player.getHasLost()){
+                    // while they still have moves left move the player
+                    while(number>0) {
+                        Set<Cell> set = new HashSet<>();
+                        set.add(board.getCell(player.getxPos(), player.getyPos()));
+                        Boolean valid = player.move(moves.get(count), board.getPlayerBoard(players), set);
+                        // if the move is valid, count is as a move and decrease the dice number
+                        if(valid){
+                            number-=1;
+                        }
+                        count += 1;
+                    }
+                }
+                dice += 1;
+            }
+        }
+    }
+
     /**
      * Creates a new instance of the game Cluedo and runs the game
      *
