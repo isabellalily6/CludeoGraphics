@@ -34,7 +34,6 @@ public class CluedoGame {
         numPlayers = ui.getNumPlayers();
         // error checking range
         while (numPlayers < 3 || numPlayers > 6) {
-            ui.invalidInput();
             numPlayers = ui.getNumPlayers();
         }
 
@@ -55,7 +54,6 @@ public class CluedoGame {
         createCards();
         createRooms();
         createWeapons();
-        makeLeftRooms();
         addWeaponsToRooms();
         decideMurder();
         dealCards();
@@ -96,7 +94,6 @@ public class CluedoGame {
         boolean asked = false;
         Set<Cell> spacesUsed = new HashSet<Cell>();
         int diceNum = rollDice();
-        ui.displayDiceRoll(diceNum);
         while (diceNum > 0) {     //continue until no more moves left
             ui.updateInfo(player, diceNum);
             spacesUsed.add(board.getCell(player.getxPos(), player.getyPos()));
@@ -109,12 +106,11 @@ public class CluedoGame {
                 }
             }
             if (diceNum > 0) {
-                ui.displayMovesLeft(diceNum);
+                //ui.displayMovesLeft(diceNum);
                 Boolean validMove = player.move(ui.getMoves(player), board.getPlayerBoard(players), spacesUsed);
                 board.updateBoard(players);
                 // error checking
                 while (!validMove) {
-                    ui.invalidInput();
                     validMove = player.move(ui.getMoves(player), board.getPlayerBoard(players), spacesUsed);
                 }
                 ui.drawWeapons(roomWeapons);
@@ -128,7 +124,6 @@ public class CluedoGame {
             String userInput = ui.checkSuggestion();
             // error checking
             while (!validSuggestion(userInput)) {
-                ui.invalidInput();
                 userInput = ui.checkSuggestion();
             }
             if (userInput.equalsIgnoreCase("S")) {
