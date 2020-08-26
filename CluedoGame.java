@@ -541,6 +541,10 @@ public class CluedoGame {
         }
         return null;
     }
+    
+    public Board getActiveBoard(){
+        return board;
+    }
 
     /**
      * Creates a new instance of the game Cluedo and runs the game
