@@ -19,13 +19,35 @@ public class CluedoGame {
     private Boolean gameOver = false;
     private int diceNum = 0;
 
+     /**
+     * Make an instance of Cluedo game and start the game
+     *
+     *
+     */
     public CluedoGame() {
         makePlayers();
         board = new Board(players);
         this.ui = new GUI(board, players, this);
         getPlayers();
     }
-
+    
+        
+    /**
+     * Make an instance of Cluedo game with the number of players passed as an integer
+     *
+     *@param num
+     */
+    public CluedoGame(int num) {
+        if(num< 3 || num > 6) {
+        }else {
+            makePlayers();
+            board = new Board(players);
+            for (int i = 0; i < num; i++) {
+                currentPlayers.add(players.get(i));
+            }
+        }
+    }
+    
     /**
      * Uses methods below to create everything needed to play the game (Cards, players etc)
      * then starts running/playing the game. Will continuously loop through the while loop
@@ -554,6 +576,12 @@ public class CluedoGame {
         // initialise the variables
         int count = 0; // counts the move
         int dice = 0; // counts the dice
+        
+        // if there is no board there are no moves to make
+        if(board == null){
+            count = moves.size();
+        }
+        
         // while there are still moves
         while(count != moves.size()){
             for(Player player: currentPlayers){
