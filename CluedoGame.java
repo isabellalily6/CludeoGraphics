@@ -59,7 +59,6 @@ public class CluedoGame {
         dealCards();
 
         // draw the board
-        ui.drawWeapons(roomWeapons);
         board.repaint();
 
         Player winningPlayer = null;
@@ -113,7 +112,6 @@ public class CluedoGame {
                 while (!validMove) {
                     validMove = player.move(ui.getMoves(player), board.getPlayerBoard(players), spacesUsed);
                 }
-                ui.drawWeapons(roomWeapons);
                 ui.repaint();
                 diceNum -= 1;
             }
@@ -137,7 +135,6 @@ public class CluedoGame {
                 accusation(player);
             }
         }
-        ui.drawWeapons(roomWeapons);
         ui.repaint();
     }
 
@@ -450,7 +447,6 @@ public class CluedoGame {
         movePlayer(room, guess.get(0));
 
         // draw the new board
-        ui.drawWeapons(roomWeapons);
         ui.repaint();
 
         guess.add(room);
