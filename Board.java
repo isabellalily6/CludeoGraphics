@@ -273,7 +273,36 @@ public class Board  extends JPanel {
                 count += 1;
             }
         }
-
+        
+        
+        public String toString(){
+        StringBuffer res = new StringBuffer();
+        for(int r = 0; r < cellsHigh; r++) { //fill in cells
+            for(int c = 0; c < cellsWide; c++) {
+                char weaponSymbol = ' ';
+                char charcaterSymbol = ' ';
+                for(Cell cell : boardWeapons){
+                    if(cell.getxCoord() == c && cell.getyCoord() == r){
+                        weaponSymbol = cell.getSymbol();
+                    }
+                }
+                for(Player player : players) {
+                    if(player.getxPos() == c && player.getyPos() == r){
+                        charcaterSymbol = player.getSymbol();
+                    }
+                }
+                char cellSymbol = getCell(c, r).getSymbol();
+                if(weaponSymbol != ' '){
+                    res.append(weaponSymbol);
+                } else if (charcaterSymbol != ' '){
+                    res.append(charcaterSymbol);
+                } else {
+                    res.append(cellSymbol);
+                }
+            }
+        }
+        return res.toString();
+    }
     }
 
 
