@@ -56,4 +56,13 @@ public class Suggestion {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Suggestion{" +
+                "character=" + character.getName() +
+                ", room=" + room.getName() +
+                ", weapon=" + weapon.getName() +
+                '}';
+    }
 }

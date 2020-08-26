@@ -273,6 +273,7 @@ public class Board  extends JPanel {
                 count += 1;
             }
         }
+    }
         
         
         public String toString(){
@@ -302,7 +303,6 @@ public class Board  extends JPanel {
             }
         }
         return res.toString();
-    }
     }
 
 

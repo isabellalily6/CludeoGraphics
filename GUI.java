@@ -2,7 +2,6 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.security.Key;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
@@ -16,7 +15,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     
     AtomicBoolean mousePressed = new AtomicBoolean(false);
     Cell movedCell = null;
-    CluedoGame game;
     private Board board;    
     // Main Panels
     JPanel playersPanel = new JPanel();
@@ -38,6 +36,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     ImageIcon dice4 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice4.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
     ImageIcon dice5 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice5.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
     ImageIcon dice6 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice6.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
+    // all cards got from https://www.quizmasters.biz/Pub%20Genius/Cluedo/Cluedo.html
     // character card images
     ImageIcon scarlet = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/scarlet.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
     ImageIcon white = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/white.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
@@ -64,10 +63,9 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     ImageIcon study = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Study.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
 
 
-    public GUI(Board board, ArrayList<Player> players, CluedoGame game) {
+    public GUI(Board board, ArrayList<Player> players) {
         this.board = board;
         this.players = players;
-        this.game = game;
         createRooms();
         createCharacters();
         createWeapons();
@@ -109,7 +107,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
                 JLabel label2 = new JLabel("To be the first to find the murder circumstances");
 
                 d.add(label1);
-                d.add(label2)
+                d.add(label2);
                 // setsize and visibility of dialog
                 setSizeandVisible(d, 200, 200);
             }
@@ -340,6 +338,10 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         movedCell = null;
         mousePressed.set(false);
 
+        while(!mousePressed.get()){
+
+        }
+
         if(movedCell!=null){
             if(movedCell.getSymbol()=='U'){
                 return "U";
@@ -569,9 +571,9 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      */
     public Suggestion makeAccusation() {
         ArrayList<String> murder = getMurder(false);
-        Room sugRoom = new Room(murder.get(0));
-        Character sugChar = new Character(murder.get(1));
-        Weapon sugWeapon = new Weapon(murder.get(2));
+        Character sugChar = new Character(murder.get(0));
+        Weapon sugWeapon = new Weapon(murder.get(1));
+        Room sugRoom = new Room(murder.get(2));
         Suggestion sug = new Suggestion(sugRoom, sugChar, sugWeapon);
         return sug;
     }
@@ -893,6 +895,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      */
     public void noCardShown() {
         JDialog d = makeDialog("No one has those cards");
+        d.setLayout(new GridLayout(2, 1));
         JButton ok = new JButton("OK");
         d.add(ok);
 
@@ -1012,7 +1015,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             }
             for(Cell c: Board.boardWeapons){
                 if(c.getxCoord()==cell.getxCoord()&&c.getyCoord()==cell.getyCoord()){
-                    player = game.weaponNames.get(c.getSymbol());
+                    player = CluedoGame.weaponNames.get(c.getSymbol());
                     board.setHover(true);
                     onPlayer = true;
                 }

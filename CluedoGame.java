@@ -13,7 +13,7 @@ public class CluedoGame {
     private Map<String, String> roomWeapons = new HashMap<>();
     private Board board;
     private Map<java.lang.Character, String> roomNames = new HashMap<>();
-    public Map<java.lang.Character, String> weaponNames = new HashMap<>();
+    static public Map<java.lang.Character, String> weaponNames = new HashMap<>();
     private Map<java.lang.Character, Cell> leftRoomLocations = new HashMap<>();
     private GUI ui;
     private Boolean gameOver = false;
@@ -27,7 +27,7 @@ public class CluedoGame {
     public CluedoGame() {
         makePlayers();
         board = new Board(players);
-        this.ui = new GUI(board, players, this);
+        this.ui = new GUI(board, players);
         getPlayers();
     }
     
@@ -39,6 +39,7 @@ public class CluedoGame {
      */
     public CluedoGame(int num) {
         if(num< 3 || num > 6) {
+
         }else {
             makePlayers();
             board = new Board(players);
@@ -58,7 +59,6 @@ public class CluedoGame {
 
         // draw the board
         board.repaint();
-
         Player winningPlayer = null;
         while (!gameOver) {  // loops through stages 2-4 from section 2.6 'User Interface' from handout
             for (Player player : currentPlayers) {
@@ -404,15 +404,12 @@ public class CluedoGame {
                 oldCharRoom=c.getRoomSymbol();
             }
         }
-        System.out.println(room);
-        //System.out.println(oldRoom);
         for (Map.Entry<java.lang.Character, String> entry : roomNames.entrySet()) {
             if (entry.getValue().equals(room)) {
                 newRoom = entry.getKey();
             }
         }
-        System.out.println(oldCharRoom);
-        System.out.println(newRoom);
+
         Cell oldCell = null;
         Cell newCell = null;
         for(Cell c: board.getBoardWeapons()){
