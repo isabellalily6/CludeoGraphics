@@ -560,9 +560,12 @@ public class CluedoGame {
     /**
      * Get current board
      * 
-     * @return
+     * @return the board
      */
     public Board getActiveBoard(){
+        if(board == null){
+            return new Board(players);
+        }
         return board;
     }
 
