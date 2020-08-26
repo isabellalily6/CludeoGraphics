@@ -104,9 +104,14 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             @Override
             public void actionPerformed(ActionEvent e) {
                 JDialog d =  makeDialog("Instructions for Cluedo:");
+                d.setLayout(new GridLayout(3, 1));
+                JLabel label1 = new JLabel("Go into each room to find clues");
+                JLabel label2 = new JLabel("To be the first to find the murder circumstances");
+
+                d.add(label1);
+                d.add(label2)
                 // setsize and visibility of dialog
                 setSizeandVisible(d, 200, 200);
-
             }
         });
 
