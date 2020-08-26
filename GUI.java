@@ -859,12 +859,28 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
 
     }
 
+    /**
+     * Displayed when a player has won 
+     * 
+     * @param player
+     */
     public void displayWinningPlayer(char player) {
-        if (player == ' ') {
-            System.out.println("You all lost the game");
-        } else {
-            System.out.println("CONGRATS Player " + player + "\nYou have won the game!!!");
-        }
+        JDialog d = makeDialog("CONGRATS Player " + player);
+        d.setLayout(new GridLayout(3, 1));
+        JLabel label = new JLabel("You have won the game!!!");
+
+        JButton ok = new JButton("OK");
+        d.add(label);
+        d.add(ok);
+
+        ok.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d.dispose();
+            }
+        });
+
+        setSizeandVisible(d, 300, 150);
     }
 
     /**
