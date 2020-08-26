@@ -189,7 +189,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             }
         });
         setSizeandVisible(d, 250, 150);
-
         return Integer.parseInt(num.getSelectedItem().toString());
     }
 
@@ -207,13 +206,12 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         infoPanel.add(label2);
         infoPanel.validate();
         infoPanel.repaint();
-
     }
     
     /**
      * One of the setup panels. This panel will pop up secend to ask for the player's
      * name and their character of choice.
-     
+     *
      * @param numPlayer
      * @return
      */
@@ -325,9 +323,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
                 d.dispose();
             }
         });
-
         setSizeandVisible(d, 100, 100);
-
     }
 
     /**
@@ -338,11 +334,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     public String getMoves(Player player) {
         movedCell = null;
         mousePressed.set(false);
-        System.out.println("Do you want to move UDLR? ");
 
-        while (!mousePressed.get()) {
-            //System.out.println(mousePressed);
-        }
         if(movedCell!=null){
             if(movedCell.getSymbol()=='U'){
                 return "U";
@@ -386,21 +378,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         }
         return "";
     }
-    public void displayPlayersTurn(char player) {
-        System.out.println("\nIt is player " + player + "'s turn");
-    }
-
-    public void displayDiceRoll(int number) {
-        System.out.println("\nThe dice rolled: " + number);
-    }
-
-    public void displayMovesLeft(int movesLeft) {
-        System.out.println("\nYou have " + movesLeft + " moves");
-    }
-
-    public void invalidInput() {
-        System.out.println("Invalid input, try again: ");
-    }
 
     /**
      * Ask for input of if the player wants to make a suggestion or accusation or neither
@@ -408,8 +385,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      * @return "S", "A", "N" indication suggestion, accusation or neither
      */
     public String checkSuggestion() {
-        System.out.println("Do you want to make a suggestion (S), an Accusation (A) or neither (N)? ");
-        System.out.println("Type S for suggestion, A for accusation and N for neither");
         JDialog makeSuggestion = makeDialog("Do you want to make a:");
         makeSuggestion.setLayout(new GridLayout(5, 0));
         // three radio buttons
@@ -578,9 +553,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      * @return ArrayList of Strings describing the 2 cards they chose
      */
     public ArrayList<String> makeSuggesstion(String room) {
-        System.out.println("Pick a card from Character and Weapon types to make a suggestion");
         ArrayList<String> murder = getMurder(true);
-        System.out.println("You suggestion is; Room: " + room + "  Character: " + murder.get(0) + "  Weapon: " + murder.get(1));
         return murder;
     }
 
@@ -590,13 +563,11 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      * @return Suggestion object containing the 3 cards they chose
      */
     public Suggestion makeAccusation() {
-        System.out.println("Pick a card from each type to make a accusation");
         ArrayList<String> murder = getMurder(false);
         Room sugRoom = new Room(murder.get(0));
         Character sugChar = new Character(murder.get(1));
         Weapon sugWeapon = new Weapon(murder.get(2));
         Suggestion sug = new Suggestion(sugRoom, sugChar, sugWeapon);
-        System.out.println("Your accusation is; Room: " + sug.getRoom().getName() + "  Character: " + sug.getCharacter().getName() + "  Weapon: " + sug.getWeapon().getName());
         return sug;
     }
 
@@ -658,7 +629,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         }
         bottomPanel.validate();
         bottomPanel.repaint();
-
     }
 
     /**
@@ -805,7 +775,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             @Override
             public void actionPerformed(ActionEvent e) {
                 answer.add("Y");
-                System.out.println(answer.get(0));
                 d.dispose();
             }
         });
@@ -813,7 +782,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             @Override
             public void actionPerformed(ActionEvent e) {
                 answer.add("N");
-                System.out.println(answer.get(0));
                 d.dispose();
             }
         });
@@ -1021,7 +989,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         Cell cell = board.getCellFromPixel(e.getX(), e.getY());
         if(cell!=null) {
             for(Player p: CluedoGame.players){
-                //System.out.println("test");
                 if(p.getxPos()==cell.getxCoord() && p.getyPos()==cell.getyCoord()){
                     player = p.getCharacterCard().getName();
                     board.setHover(true);
@@ -1039,7 +1006,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         if(!onPlayer){
             board.setHover(false);
         }
-        //System.out.println(player);
         toolTip(player);
     }
 }
