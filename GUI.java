@@ -309,7 +309,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      * @param players
      */
     public void displayPlayers(ArrayList<Player> players) {
-        playersPanel.setLayout(new GridLayout(players.size(), 1));
+        playersPanel.setLayout(new GridLayout(players.size()+1, 1));
         for (int i = 0; i < players.size(); i++) {
             String text = "Player " + (i + 1) + ": " + players.get(i).getCharacterCard().getName() + ": " +
                     players.get(i).getName();
