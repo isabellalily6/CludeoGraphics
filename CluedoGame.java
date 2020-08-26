@@ -23,6 +23,7 @@ public class CluedoGame {
         makePlayers();
         board = new Board(players);
         this.ui = new GUI(board, players, this);
+        getPlayers();
     }
 
     /**
@@ -30,7 +31,44 @@ public class CluedoGame {
      * then starts running/playing the game. Will continuously loop through the while loop
      * until game finishes.
      */
-    public void run() {
+   public void run() {
+        setUp();
+
+        // draw the board
+        board.repaint();
+
+        Player winningPlayer = null;
+        while (!gameOver) {  // loops through stages 2-4 from section 2.6 'User Interface' from handout
+            for (Player player : currentPlayers) {
+                if (!player.getHasLost()) {
+                    ui.nextPlayer(player);
+                    ui.showHand(player.getHand());
+                    playersTurn(player);
+                }
+                if (gameOver) {
+                    winningPlayer = player;
+                    break;
+                }
+            }
+        }
+        if (checkGameOver() == null) {
+            gameOver(winningPlayer);
+        } else {
+            gameOver(checkGameOver());
+        }
+    } 
+    
+    public void setUp(){
+        // set up the game
+        createCards();
+        createRooms();
+        createWeapons();
+        addWeaponsToRooms();
+        decideMurder();
+        dealCards();
+    }
+
+    public void getPlayers(){
         numPlayers = ui.getNumPlayers();
         // error checking range
         while (numPlayers < 3 || numPlayers > 6) {
@@ -49,39 +87,7 @@ public class CluedoGame {
             }
         }
         ui.displayPlayers(currentPlayers);
-
-        // set up the game
-        createCards();
-        createRooms();
-        createWeapons();
-        addWeaponsToRooms();
-        decideMurder();
-        dealCards();
-
-        // draw the board
-        board.repaint();
-
-        Player winningPlayer = null;
-        while (!gameOver) {  // loops through stages 2-4 from section 2.6 'User Interface' from handout
-            for (Player player : currentPlayers) {
-                if (!player.getHasLost()) {
-                    ui.nextPlayer(player);
-                    ui.displayPlayersTurn(player.getSymbol());
-                    ui.showHand(player.getHand());
-                    playersTurn(player);
-                }
-                if (gameOver) {
-                    winningPlayer = player;
-                    break;
-                }
-            }
-        }
-        if (checkGameOver() == null) {
-            gameOver(winningPlayer);
-        } else {
-            gameOver(checkGameOver());
-        }
-    } 
+    }
 
     /**
      * Runs through a players turn including; dice roll, moves, suggestion etc
