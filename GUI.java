@@ -859,12 +859,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
 
     }
 
-    public void drawWeapons(Map<String, String> map) {
-        for (String room : map.keySet()) {
-            System.out.println("Room: " + room + " contains Weapon: " + map.get(room));
-        }
-    }
-
     public void displayWinningPlayer(char player) {
         if (player == ' ') {
             System.out.println("You all lost the game");
