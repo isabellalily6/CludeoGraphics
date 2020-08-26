@@ -8,28 +8,29 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 
 public class GUI extends JFrame implements MouseListener, KeyListener, MouseMotionListener {
+    // Collections
     private ArrayList<String> weaponNames = new ArrayList<>();
     private ArrayList<String> roomNames = new ArrayList<>();
     private ArrayList<String> characterNames = new ArrayList<>();
-
+    private ArrayList<Player> players;
+    
     AtomicBoolean mousePressed = new AtomicBoolean(false);
     Cell movedCell = null;
     CluedoGame game;
-    private Board board;
-    private ArrayList<Player> players;
+    private Board board;    
+    // Main Panels
     JPanel playersPanel = new JPanel();
     JPanel infoPanel = new JPanel();
     JPanel bottomPanel = new JPanel();
     JPanel mainPanel = new JPanel(new BorderLayout());
     JLabel firstDice = new JLabel();
     JLabel secondDice = new JLabel();
-
+    // Cell Information
     private int cellSize = 26; //change this to change the size of the window on screen
     private int cellsWide = 24;
     private int cellsHigh = 25;
     private int width = cellSize * (cellsWide + 2); //+2 leaves space around the boards as a border
     private int height = cellSize * (cellsHigh + 2);
-
     // dice images
     ImageIcon dice1 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice1.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
     ImageIcon dice2 = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/dice2.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
@@ -88,6 +89,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         GridBagConstraints gbc = new GridBagConstraints();
         setResizable(true);
 
+        // Menu bar 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
         JMenuItem i1 = new JMenuItem("Instructions");
@@ -97,7 +99,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         menu.add(i2);
         menuBar.add(menu);
 
-
+        // Instructions item button
         i1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,6 +110,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             }
         });
 
+        // Exit item button
         i2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,6 +118,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             }
         });
 
+        // Get images
         firstDice.setIcon(dice1);
         secondDice.setIcon(dice2);
         setJMenuBar(menuBar);
@@ -177,7 +181,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         d.add(num);
         d.add(next);
 
-
+        // If button is clicked a new panel will appear until or the game will begin
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -187,7 +191,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         setSizeandVisible(d, 250, 150);
 
         return Integer.parseInt(num.getSelectedItem().toString());
-
     }
 
     /**
