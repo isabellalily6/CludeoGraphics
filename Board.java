@@ -278,8 +278,10 @@ public class Board  extends JPanel {
         
         public String toString(){
         StringBuffer res = new StringBuffer();
+        int count = 0;
         for(int r = 0; r < cellsHigh; r++) { //fill in cells
             for(int c = 0; c < cellsWide; c++) {
+                count++;
                 char weaponSymbol = ' ';
                 char charcaterSymbol = ' ';
                 for(Cell cell : boardWeapons){
@@ -300,10 +302,12 @@ public class Board  extends JPanel {
                 } else {
                     res.append(cellSymbol);
                 }
+                if(count == 24){
+                    res.append('\n');
+                    count = 0;
+                }
             }
         }
         return res.toString();
     }
-
-
 }
