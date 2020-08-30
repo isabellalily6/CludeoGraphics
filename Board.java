@@ -108,13 +108,13 @@ public class Board  extends JPanel {
             g2.drawOval(cellSize*(xPos+1)+cellSize/8, cellSize*(yPos+1)+cellSize/8, cellSize*3/4, cellSize*3/4);
 
 
-            //cellSize*(cell.getxCoord()+1)+cellSize/7, cellSize*(cell.getyCoord()+2)+cellSize/9
-
+            //display the weapons
             for(Cell cell : boardWeapons){
                 g2.setColor(Color.black);
                 g2.drawString(String.valueOf(cell.getSymbol()), cellSize*(cell.getxCoord()+1)+cellSize/4, cellSize*(cell.getyCoord()+1)+cellSize*3/4);
             }
 
+            //display the names of the rooms
             g2.setColor(Color.white);
             g2.drawString("Kitchen", cellSize*3, cellSize*7/4);
             g2.drawString("Ball Room", cellSize*46/4, cellSize*11/4);

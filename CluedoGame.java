@@ -90,6 +90,10 @@ public class CluedoGame {
         dealCards();
     }
 
+    /**
+     * Calls for input of how many players and what characters they will be
+     * Displays the current players
+     */
     public void getPlayers(){
         numPlayers = ui.getNumPlayers();
         // error checking range

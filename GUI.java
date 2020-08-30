@@ -1,4 +1,4 @@
-// Controls all output and input of the game
+// Controls the displaying of the game on the screen
 
 import java.awt.*;
 import java.awt.event.*;
@@ -76,9 +76,12 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      *  Opens all panels
      */
     private void initUI() {
+    	//set up mouse listeners
         mainPanel.addMouseMotionListener(this);
         mainPanel.addMouseListener(this);
         addKeyListener(this);
+        
+        //window
         setTitle("Cluedo Game");
         setSize(width, height);
         setLocationRelativeTo(null);
@@ -126,6 +129,8 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         secondDice.setIcon(dice2);
         setJMenuBar(menuBar);
 
+        
+        //Panels
         JPanel dicePanel = new JPanel(new GridBagLayout());
 
         infoPanel.setLayout(new GridLayout(2, 1));

@@ -1,3 +1,5 @@
+// Tests using JUnit to make sure the game works properly
+
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -6,8 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class Tests {
+	
     @Test
     public void test_01() {
+    	//Check the board is made correctly
+    	
         CluedoGame cg = new CluedoGame(3);
         String expected =
                 "XXXXXXXXX3XXXX4XXXXXXXXX\n" +
@@ -38,7 +43,9 @@ public class Tests {
 
         assertEquals(expected, cg.getActiveBoard().toString());
     }
-    @Test public void test_02() {
+    
+    @Test 
+    public void test_02() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -87,7 +94,8 @@ public class Tests {
         assertEquals(expected, cg.getActiveBoard().toString());
     }
 
-    @Test public void test_03() {
+    @Test 
+    public void test_03() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -152,7 +160,8 @@ public class Tests {
         assertEquals(expected, cg.getActiveBoard().toString());
     }
 
-    @Test public void test_04() {
+    @Test 
+    public void test_04() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -224,7 +233,8 @@ public class Tests {
         assertEquals(sugExpected, sug.toString());
     }
 
-    @Test public void test_05() {
+    @Test 
+    public void test_05() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -303,7 +313,8 @@ public class Tests {
         assertFalse(sug2Expected, suggestions.get(1).toString());
     }
 
-    @Test public void test_06() {
+    @Test 
+    public void test_06() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(6);
 
