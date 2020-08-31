@@ -21,8 +21,6 @@ public class CluedoGame {
 
     /**
      * Make an instance of Cluedo game and start the game
-     *
-     *
      */
     public CluedoGame() {
         makePlayers();
@@ -38,10 +36,13 @@ public class CluedoGame {
      *@param num
      */
     public CluedoGame(int num) {
+        players.clear();
+        currentPlayers.clear();
         if(num< 3 || num > 6) {
 
         }else {
             makePlayers();
+
             board = new Board(players);
             for (int i = 0; i < num; i++) {
                 currentPlayers.add(players.get(i));
@@ -80,6 +81,9 @@ public class CluedoGame {
         }
     }
 
+    /*
+    * Set up of the game. Creates required objects, deicides the murder, deals cards
+    */
     public void setUp(){
         // set up the game
         createCards();
@@ -90,6 +94,9 @@ public class CluedoGame {
         dealCards();
     }
 
+    /*
+    * Asks for the players that will play the game and displays them
+    */
     public void getPlayers(){
         numPlayers = ui.getNumPlayers();
         // error checking range
@@ -194,9 +201,10 @@ public class CluedoGame {
 
     public void makeLeftRooms(){
         for(java.lang.Character s : roomNames.keySet()){
-            // add the co-ordes of left corner of room
+            // add the co-ords of left corner of room
         }
     }
+    
     /**
      * Create the character, weapon and room cards
      */
