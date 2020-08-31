@@ -5,6 +5,8 @@ public class Card {
 
     /**
      * Constructor for the card
+     *
+     * @param name
      */
     public Card(String name){
         this.name = name;
