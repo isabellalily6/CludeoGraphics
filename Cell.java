@@ -8,6 +8,8 @@ public class Cell {
 
     /**
      * Constructor for cells on the board
+     *
+     * @param x, y, symbol
      */
     public Cell(int x, int y, char symbol) {
         xCoord = x;
