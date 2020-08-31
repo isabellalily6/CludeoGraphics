@@ -6,12 +6,18 @@ public class Cell {
     private char symbol; //Represents what the cell is (wall, room, etc.)
     private char roomSymbol; //Represents what object this room is in
 
+    /**
+     * Constructor for cells on the board
+     */
     public Cell(int x, int y, char symbol) {
         xCoord = x;
         yCoord = y;
         this.symbol = symbol;
     }
-
+    
+    /**
+     * Consturctor for cells with weapons on the board to show what room they are in
+     */
     public Cell(int x, int y, char symbol, char roomSymbol) {
         xCoord = x;
         yCoord = y;
@@ -48,7 +54,10 @@ public class Cell {
         }
         return false;
     }
-
+    
+    /**
+     * Change the symbol of the cell
+     */
     public void changeCell(Cell c){
         this.symbol = c.symbol;
     }
@@ -61,11 +70,19 @@ public class Cell {
     public char getSymbol() {
         return symbol;
     }
-
+    
+    /**
+     * @return the symbol for the room the cell is in
+     */
     public char getRoomSymbol(){
         return roomSymbol;
     }
 
+    /**
+     * Changes the symbol for the weapon that is in the cell
+     *
+     * @param symbol
+     */
     public void changeWeapon(char symbol){
         this.symbol = symbol;
     }
