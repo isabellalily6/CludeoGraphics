@@ -63,6 +63,11 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     ImageIcon study = new ImageIcon(new ImageIcon(getClass().getResource("Pictures/Study.jpg")).getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
 
 
+    /*
+    * Constructor for the GUI
+    *
+    * @param board, players
+    */
     public GUI(Board board, ArrayList<Player> players) {
         this.board = board;
         this.players = players;
@@ -149,7 +154,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(new Board(players), gbc);
 
-        gbc = getGBC(gbc, 1, 0, 1, 1, 0.5, 3);
+        gbc = getGBC(gbc, 1, 0, 1, 1, 0.5, 2);
         mainPanel.add(playersPanel, gbc);
 
         gbc = getGBC(gbc, 1, 2, 1, 1, 0.5, 0.25);
@@ -314,6 +319,10 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
             playersPanel.add(new JLabel(text));
         }
     }
+    
+    /*
+    * Dialog for the
+    */
     public void nextPlayer(Player p){
         bottomPanel.removeAll();
         JDialog d = makeDialog("It is player " + p.getPlayerNum() + "'s turn.");
@@ -909,6 +918,13 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         setSizeandVisible(d, 100, 100);
     }
 
+    /*
+    * Creates a group of buttons from a list of strings for a dialog
+    *
+    * @param dialog, AL<String>
+    *
+    * @return ButtonGroup
+    */
     public ButtonGroup addButtonGroup(JDialog d, ArrayList<String> list) {
         ButtonGroup group = new ButtonGroup();
         for (String s : list) {
@@ -920,7 +936,13 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         return group;
     }
 
-
+    /*
+    * Makes a new JDialog from a string
+    *
+    * @param text
+    *
+    * @return JDialog
+    */
     public JDialog makeDialog(String text) {
         JDialog d = new JDialog(this, true);
         JLabel label = new JLabel(text);
@@ -928,11 +950,19 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         return d;
     }
 
+    /*
+    * Sets the size of a dialog box and makes it visible
+    *
+    * @param dialog, width, height
+    */
     public void setSizeandVisible(JDialog d, int x, int y) {
         d.setSize(x, y);
         d.setVisible(true);
     }
 
+    /*
+    * 
+    */
     public GridBagConstraints getGBC(GridBagConstraints gbc, int x, int y, int width, int height, double xweight, double yweight) {
         gbc.gridx = x;
         gbc.gridy = y;
@@ -942,6 +972,10 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         gbc.weighty = yweight;
         return gbc;
     }
+    
+    /*
+    * 
+    */
     public void toolTip(String player){
         mainPanel.setToolTipText(player);
     }
