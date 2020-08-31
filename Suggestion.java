@@ -5,6 +5,11 @@ public class Suggestion {
     private Card room;
     private Card weapon;
 
+    /*
+    * Constructor for a suggestion
+    * 
+    * @param room, character, weapon
+    */
     public Suggestion(Room room, Character character, Weapon weapon) {
         this.character = character;
         this.room = room;
@@ -57,6 +62,9 @@ public class Suggestion {
         return false;
     }
 
+    /*
+    * Returns a description of the suggestion
+    */
     @Override
     public String toString() {
         return "Suggestion{" +
