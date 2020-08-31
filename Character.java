@@ -5,6 +5,8 @@ public class Character extends Card {
     
     /**
     * Constructor for a character card
+    *
+    * @param name
     */
     public Character(String charName) {
         super(charName);
