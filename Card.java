@@ -7,6 +7,10 @@ public class Card {
     public Card(String name){
         this.name = name;
     }
+
+    public Card() {
+    }
+
     /**
      * Gets the name of the card
      *

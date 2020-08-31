@@ -1,4 +1,4 @@
-// Controls the displaying of the game on the screen
+// Controls all output and input of the game
 
 import java.awt.*;
 import java.awt.event.*;
@@ -12,10 +12,10 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     private ArrayList<String> roomNames = new ArrayList<>();
     private ArrayList<String> characterNames = new ArrayList<>();
     private ArrayList<Player> players;
-    
+
     AtomicBoolean mousePressed = new AtomicBoolean(false);
     Cell movedCell = null;
-    private Board board;    
+    private Board board;
     // Main Panels
     JPanel playersPanel = new JPanel();
     JPanel infoPanel = new JPanel();
@@ -76,12 +76,9 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
      *  Opens all panels
      */
     private void initUI() {
-    	//set up mouse listeners
         mainPanel.addMouseMotionListener(this);
         mainPanel.addMouseListener(this);
         addKeyListener(this);
-        
-        //window
         setTitle("Cluedo Game");
         setSize(width, height);
         setLocationRelativeTo(null);
@@ -90,7 +87,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         GridBagConstraints gbc = new GridBagConstraints();
         setResizable(true);
 
-        // Menu bar 
+        // Menu bar
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
         JMenuItem i1 = new JMenuItem("Instructions");
@@ -129,8 +126,6 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         secondDice.setIcon(dice2);
         setJMenuBar(menuBar);
 
-        
-        //Panels
         JPanel dicePanel = new JPanel(new GridBagLayout());
 
         infoPanel.setLayout(new GridLayout(2, 1));
@@ -215,7 +210,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         infoPanel.validate();
         infoPanel.repaint();
     }
-    
+
     /**
      * One of the setup panels. This panel will pop up secend to ask for the player's
      * name and their character of choice.
@@ -245,7 +240,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         bg.add(button6);
 
         JButton next = new JButton("Next");
-        
+
         // If button is clicked a new panel will appear until or the game will begin
         next.addActionListener(new ActionListener() {
             @Override
@@ -308,7 +303,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
 
     /**
      * Player information that will be displayed on the right side panel
-     * 
+     *
      * @param players
      */
     public void displayPlayers(ArrayList<Player> players) {
@@ -625,11 +620,11 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
 
     /**
      * Print the pictures that represent the current player's hand on the bottom panel
-     * 
+     *
      * @param hand
      */
     public void showHand(ArrayList<Card> hand) {
-        bottomPanel.removeAll(); // clear bottom panel of all pictures 
+        bottomPanel.removeAll(); // clear bottom panel of all pictures
         // Prints current players hand
         for (Card c : hand) {
             ImageIcon icon = getCard(c.getName());
@@ -645,7 +640,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
 
     /**
      * Gets the image that represents the card
-     * 
+     *
      * @param name
      * @return
      */
@@ -813,7 +808,7 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     /**
      * Will display the card made in a suggestion from the current player
      * that another player has in their hand
-     * 
+     *
      * @param withCard
      * @param toShow
      */
@@ -872,8 +867,8 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
     }
 
     /**
-     * Displayed when a player has won 
-     * 
+     * Displayed when a player has won
+     *
      * @param player
      */
     public void displayWinningPlayer(char player) {

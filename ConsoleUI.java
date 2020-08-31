@@ -206,11 +206,11 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         infoPanel.repaint();
 
     }
-    
+
     /**
      * One of the setup panels. This panel will pop up secend to ask for the player's
      * name and their character of choice.
-     
+
      * @param numPlayer
      * @return
      */
@@ -236,7 +236,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
         bg.add(button6);
 
         JButton next = new JButton("Next");
-        
+
         // If button is clicked a new panel will appear until or the game will begin
         next.addActionListener(new ActionListener() {
             @Override
@@ -299,7 +299,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
     /**
      * Player information that will be displayed on the right side panel
-     * 
+     *
      * @param players
      */
     public void displayPlayers(ArrayList<Player> players) {
@@ -639,11 +639,11 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
     /**
      * Print the pictures that represent the current player's hand on the bottom panel
-     * 
+     *
      * @param hand
      */
     public void showHand(ArrayList<Card> hand) {
-        bottomPanel.removeAll(); // clear bottom panel of all pictures 
+        bottomPanel.removeAll(); // clear bottom panel of all pictures
         // Prints current players hand
         for (Card c : hand) {
             ImageIcon icon = getCard(c.getName());
@@ -660,7 +660,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
 
     /**
      * Gets the image that represents the card
-     * 
+     *
      * @param name
      * @return
      */
@@ -830,7 +830,7 @@ public class ConsoleUI extends JFrame implements MouseListener, KeyListener, Mou
     /**
      * Will display the card made in a suggestion from the current player
      * that another player has in their hand
-     * 
+     *
      * @param withCard
      * @param toShow
      */

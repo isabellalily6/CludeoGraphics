@@ -19,7 +19,7 @@ public class CluedoGame {
     private Boolean gameOver = false;
     private int diceNum = 0;
 
-     /**
+    /**
      * Make an instance of Cluedo game and start the game
      *
      *
@@ -30,8 +30,8 @@ public class CluedoGame {
         this.ui = new GUI(board, players);
         getPlayers();
     }
-    
-        
+
+
     /**
      * Make an instance of Cluedo game with the number of players passed as an integer
      *
@@ -48,13 +48,13 @@ public class CluedoGame {
             }
         }
     }
-    
+
     /**
      * Uses methods below to create everything needed to play the game (Cards, players etc)
      * then starts running/playing the game. Will continuously loop through the while loop
      * until game finishes.
      */
-   public void run() {
+    public void run() {
         setUp();
 
         // draw the board
@@ -78,8 +78,8 @@ public class CluedoGame {
         } else {
             gameOver(checkGameOver());
         }
-    } 
-    
+    }
+
     public void setUp(){
         // set up the game
         createCards();
@@ -90,10 +90,6 @@ public class CluedoGame {
         dealCards();
     }
 
-    /**
-     * Calls for input of how many players and what characters they will be
-     * Displays the current players
-     */
     public void getPlayers(){
         numPlayers = ui.getNumPlayers();
         // error checking range
@@ -481,7 +477,7 @@ public class CluedoGame {
         guess.add(room);
         boolean shownCard = false;
         int num = 0;
-        
+
         if ((player.getPlayerNum()) == numPlayers) { // if last player go back to the beginning
             num = 0;
         } else {
@@ -557,10 +553,10 @@ public class CluedoGame {
         }
         return null;
     }
-    
+
     /**
      * Get current board
-     * 
+     *
      * @return the board
      */
     public Board getActiveBoard(){
@@ -570,9 +566,9 @@ public class CluedoGame {
         return board;
     }
 
-        /**
+    /**
      * Move players based an array of moves and the dice numbers rolled to test movement
-     * 
+     *
      * @param moves
      * @param num
      */
@@ -580,12 +576,12 @@ public class CluedoGame {
         // initialise the variables
         int count = 0; // counts the move
         int dice = 0; // counts the dice
-        
+
         // if there is no board there are no moves to make
         if(board == null){
             count = moves.size();
         }
-        
+
         // while there are still moves
         while(count != moves.size()){
             for(Player player: currentPlayers){

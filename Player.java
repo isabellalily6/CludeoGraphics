@@ -45,7 +45,6 @@ public class Player {
     }
     /**
      * Returns whether the player has lost the game or not
-
      * @return true if they have lost the game, otherwise false
      */
     public Boolean getHasLost() {
@@ -82,7 +81,6 @@ public class Player {
 
     /**
      * Returns the players character card
-
      * @return the character card of the player
      */
     public Character getCharacterCard() {
@@ -91,7 +89,6 @@ public class Player {
 
     /**
      * Returns the players symbol
-
      * @return the symbol of the player
      */
     public char getSymbol() {
@@ -100,7 +97,6 @@ public class Player {
 
     /**
      * Returns the players hand
-
      * @return the hand of the player
      */
     public ArrayList<Card> getHand() {
@@ -158,7 +154,6 @@ public class Player {
 
     /**
      * Returns the x position of the player
-
      * @return the x position
      */
     public int getxPos() {
@@ -167,7 +162,6 @@ public class Player {
 
     /**
      * Returns the y position of the player
-
      * @return the y position
      */
     public int getyPos() {
@@ -176,7 +170,6 @@ public class Player {
 
     /**
      * Adds a card to the players hand
-
      * @param card
      */
     public void addToHand(Card card) {
