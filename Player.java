@@ -15,6 +15,11 @@ public class Player {
     private Set<Cell> placesMoved = new HashSet<>();
     private int playerNum;
 
+    /*
+    * Contsructor for player
+    *
+    * @param name, startx, starty, symbol to display
+    */
     public Player(Character name, int startX, int startY, char symbol) {
         characterCard = name;
         originalLocation = new Cell(startX, startY, symbol);
@@ -24,22 +29,45 @@ public class Player {
         playerNums.add(symbol);
     }
 
+    /*
+    * Add to the list of places moved
+    *
+    * @param cell
+    */
     public void addPlacesMoved(Cell placeMoved) {
         this.placesMoved.add(placeMoved);
     }
 
+    /*
+    * Clears the list of places moved
+    */
     public void clearPlacesMoved() {
         this.placesMoved.clear();
     }
 
+    /*
+    * Gets the set of places moved
+    *
+    * @return Set<Cell>
+    */
     public Set<Cell> getPlacesMoved() {
         return placesMoved;
     }
 
+    /*
+    * Set the player's name
+    *
+    * @param name
+    */
     public void setName(String name){
         this.name = name;
     }
-
+    
+    /*
+    * Gets the player's name
+    *
+    * @return String
+    */
     public String getName(){
         return name;
     }
@@ -67,14 +95,29 @@ public class Player {
         return matches;
     }
 
+    /*
+    * Sets the sybmol of the player
+    *
+    * @param char symbol
+    */
     public void setSymbol(char symbol) {
         this.symbol = symbol;
     }
 
+    /*
+    * Gets the number of this player
+    *
+    * @return int
+    */
     public int getPlayerNum() {
         return playerNum;
     }
 
+    /*
+    * Sets the number of the player
+    * 
+    * @param playerNum
+    */
     public void setPlayerNum(int playerNum) {
         this.playerNum = playerNum;
     }
