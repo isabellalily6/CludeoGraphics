@@ -3,7 +3,9 @@
 public class Card {
     private String name;
 
-
+    /**
+     * Constructor for the card
+     */
     public Card(String name){
         this.name = name;
     }
