@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class Tests {
+    
+    /*
+    * Tests the making of the board
+    */
     @Test
     public void test_01() {
         CluedoGame cg = new CluedoGame(3);
@@ -38,7 +42,12 @@ public class Tests {
 
         assertEquals(expected, cg.getActiveBoard().toString());
     }
-    @Test public void test_02() {
+    
+    /*
+    * Test the dice and player movement
+    */
+    @Test 
+    public void test_02() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -87,7 +96,11 @@ public class Tests {
         assertEquals(expected, cg.getActiveBoard().toString());
     }
 
-    @Test public void test_03() {
+    /*
+    * Tests multiple players moving
+    */
+    @Test 
+    public void test_03() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -152,7 +165,11 @@ public class Tests {
         assertEquals(expected, cg.getActiveBoard().toString());
     }
 
-    @Test public void test_04() {
+    /*
+    * Tests making a suggestion
+    */
+    @Test 
+    public void test_04() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -224,7 +241,11 @@ public class Tests {
         assertEquals(sugExpected, sug.toString());
     }
 
-    @Test public void test_05() {
+    /*
+    * Tests wrong and right suggestions
+    */
+    @Test 
+    public void test_05() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(3);
 
@@ -303,7 +324,11 @@ public class Tests {
         assertFalse(sug2Expected, suggestions.get(1).toString());
     }
 
-    @Test public void test_06() {
+    /*
+    * Tests 6 players moving
+    */
+    @Test 
+    public void test_06() {
         // Create a new game with the number of players passed as a parameter
         CluedoGame cg = new CluedoGame(6);
 
