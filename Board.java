@@ -56,12 +56,21 @@ public class Board  extends JPanel {
         System.out.println();
     }
 
+    /*
+    * Set hover to a boolean
+    *
+    * @param boolean
+    */
     public void setHover(Boolean bool) {
         hover.set(bool);
     }
 
+    /*
+    * Paints the board on the graphics pane
+    * 
+    * @param Graphics
+    */
     public void paint(Graphics g) {
-
 
         g2 = (Graphics2D) g;
         for(int c = 0; c < cellsWide; c++) { //fill in cells
@@ -132,6 +141,7 @@ public class Board  extends JPanel {
             g2.drawString("Study", cellSize*82/4, cellSize*103/4);
         }
     }
+    
     /**
      * Creating Cells in each room for a weapon to go into
      */
@@ -147,6 +157,11 @@ public class Board  extends JPanel {
         boardWeapons.add(new Cell(22, 1, ' ', 'C'));
     }
 
+    /*
+    * Gets the list of cells for weapons
+    *
+    * @return ArrayList<Cell>
+    */
     public ArrayList<Cell> getBoardWeapons(){
         return boardWeapons;
     }
@@ -178,9 +193,15 @@ public class Board  extends JPanel {
         }
     }
 
+    /*
+    * Updates the board with the players
+    *
+    * @param players
+    */
     public void updateBoard(ArrayList<Player> players){
         playerBoard = getPlayerBoard(players);
     }
+    
     /**
      * Adds all players the player on the board in their current position
      *
@@ -278,7 +299,11 @@ public class Board  extends JPanel {
         }
     }
 
-
+    /*
+    * Returns a string of the board
+    *
+    * @return String
+    */
     public String toString(){
         StringBuffer res = new StringBuffer();
         int count = 0;
