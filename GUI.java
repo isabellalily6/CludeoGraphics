@@ -170,6 +170,11 @@ public class GUI extends JFrame implements MouseListener, KeyListener, MouseMoti
         setVisible(false);
     }
 
+    /*
+    * Sets the icon of the dice to be displayed
+    *
+    * @param first die, second die
+    */
     public void setDice(int one, int two) {
         firstDice.setIcon(getDice(one));
         secondDice.setIcon(getDice(two));
