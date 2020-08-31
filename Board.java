@@ -25,6 +25,11 @@ public class Board  extends JPanel {
     private int width = cellSize*(cellsWide+2); //+2 leaves space around the board as a border
     private int height = cellSize*(cellsHigh+2);
 
+    /*
+    * Constructor for the board
+    *
+    * @param players
+    */
     public Board(ArrayList<Player> players) {
         makeBoard();
         makeBoardWeapons();
