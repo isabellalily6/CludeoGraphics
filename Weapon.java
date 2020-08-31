@@ -6,11 +6,21 @@ public class Weapon extends Card {
     private int xPos;
     private int yPos;
 
+    /*
+    * Constructor for a weapon
+    *
+    * @param weaponName
+    */
     public Weapon(String weaponName) {
         super(weaponName);
         name = weaponName;
     }
 
+    /*
+    * Constructor for a weapon with symbol and position
+    *
+    * @param weaponName, symbol, x, y
+    */
     public Weapon(String weapnName, char symbol, int x, int y){
         name = weapnName;
         this.symbol = symbol;
@@ -18,6 +28,11 @@ public class Weapon extends Card {
         yPos = y;
     }
 
+    /*
+    * Gets the name of the weapon
+    *
+    * @return String
+    */
     public String getName() {
         return name;
     }
